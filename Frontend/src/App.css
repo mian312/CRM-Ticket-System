@@ -1,8 +1,35 @@
 .app {
-  width: 100vw;
+  width: 98.7vw;
   height: 100vh;
 }
 
 Button {
   margin: 6px 0px;
+}
+
+.default-layout {
+  display: gird;
+  grid-template-rows: 5rem auto 3rem;
+  grid-template-areas:
+    "header"
+    "main"
+    "footer";
+}
+
+header {
+  grid-area: header;
+  background-color: brown;
+  width: 100%;
+}
+
+main {
+  grid-area: main;
+  height: max-content;
+}
+
+footer {
+  grid-area: footer;
+  background: black;
+  padding: 1rem;
+  color: white;
 }

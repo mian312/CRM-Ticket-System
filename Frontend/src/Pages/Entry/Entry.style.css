@@ -1,5 +1,5 @@
 .entry-page {
-    height: 100%;
+    height: 100vh;
     background-color: rgb(190, 255, 246);
     display: flex;
     justify-content: center;
