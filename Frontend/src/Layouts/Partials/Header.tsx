@@ -1,8 +1,9 @@
+import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
 
-export const Header = () => {
+export const Header: React.FC = () => {
   return (
     <Navbar collapseOnSelect bg="info" variant="dark" expand="md">
       <Navbar.Brand className="ps-1">
