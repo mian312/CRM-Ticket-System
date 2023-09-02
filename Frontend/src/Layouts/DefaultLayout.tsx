@@ -8,7 +8,7 @@ interface DefaultLayoutProps {
 
 export const DefaultLayout: React.FC<DefaultLayoutProps> = ({ children }) => {
     return (
-        <div className="default-layout">
+        <div className="default-layout app">
             <header className="header sticky-top">
                 <Header />
             </header>

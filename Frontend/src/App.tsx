@@ -6,15 +6,16 @@ import {
   Route,
   Routes
 } from 'react-router-dom';
+import { Dashboard } from './Layouts/Pages/Dashboard/Dashboard';
 import { DefaultLayout } from './Layouts/DefaultLayout';
 
 export default function App() {
   return (
-    <div className='app'>
+    <DefaultLayout>
       <Routes>
-          <Route path='/' element={<DefaultLayout><Entry/></DefaultLayout>} />
-          {/* <Route path='/' Component={Entry} /> */}
+        <Route path='/' Component={Entry} />
+        <Route path='/dashboard' Component={Dashboard} />
       </Routes>
-    </div>
+    </DefaultLayout>
   )
 }
