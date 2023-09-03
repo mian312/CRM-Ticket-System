@@ -8,6 +8,7 @@ import {
 import { DefaultLayout } from './Layouts/DefaultLayout';
 import Entry from './Pages/Entry/Entry.pg';
 import { Dashboard } from './Pages/Dashboard/Dashboard';
+import { AddTicket } from './Pages/New-Ticket/AddTicket';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
       <Routes>
         <Route path='/' Component={Entry} />
         <Route path='/dashboard' Component={Dashboard} />
+        <Route path='/add-ticket' Component={AddTicket} />
       </Routes>
     </DefaultLayout>
   )

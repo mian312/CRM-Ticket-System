@@ -4,8 +4,16 @@ import { Helmet } from "react-helmet-async";
 import { BreadCrumb } from "../../Components/BreadCrumbs/BreadCrumb";
 import TicketTable from "../../Components/Tickets/TicketTable";
 import tickets from "../../assets/data/dummy-tickets.json";
+import { useNavigate } from "react-router-dom";
 
 export const Dashboard: React.FC = () => {
+    const navigate = useNavigate();
+
+    const handleOnClick = (e: React.MouseEvent) => {
+        e.preventDefault();
+        navigate('/add-ticket')
+    }
+
     return (
         <Container>
             <Helmet><title>Ticket Dashboard</title></Helmet>
@@ -19,6 +27,7 @@ export const Dashboard: React.FC = () => {
                     <Button
                         variant="info"
                         style={{ fontSize: "2rem", padding: "10px 30px" }}
+                        onClick={handleOnClick}
                     >
                         Add New Ticket
                     </Button>

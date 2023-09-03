@@ -8,7 +8,7 @@ Button {
 }
 
 .default-layout {
-  display: gird;
+  display: grid;
   grid-template-rows: 5rem auto 3rem;
   grid-template-areas:
     "header"
@@ -18,13 +18,14 @@ Button {
 
 header {
   grid-area: header;
-  background-color: brown;
   width: 100%;
 }
 
 main {
   grid-area: main;
   height: max-content;
+  flex-grow: 1;
+  overflow-y: auto;
 }
 
 footer {
