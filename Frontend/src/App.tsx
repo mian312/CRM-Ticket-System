@@ -1,13 +1,13 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import Entry from './Pages/Entry/Entry.pg'
 import {
   Route,
   Routes
 } from 'react-router-dom';
-import { Dashboard } from './Layouts/Pages/Dashboard/Dashboard';
 import { DefaultLayout } from './Layouts/DefaultLayout';
+import Entry from './Pages/Entry/Entry.pg';
+import { Dashboard } from './Pages/Dashboard/Dashboard';
 
 export default function App() {
   return (

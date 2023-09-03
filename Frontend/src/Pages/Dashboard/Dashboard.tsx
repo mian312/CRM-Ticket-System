@@ -1,9 +1,9 @@
 import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import TicketTable from "../../../Components/Tickets/TicketTable";
-import tickets from "../../../assets/data/dummy-tickets.json";
-import { BreadCrumb } from "../../../Components/BreadCrumbs/BreadCrumb";
 import { Helmet } from "react-helmet-async";
+import { BreadCrumb } from "../../Components/BreadCrumbs/BreadCrumb";
+import TicketTable from "../../Components/Tickets/TicketTable";
+import tickets from "../../assets/data/dummy-tickets.json";
 
 export const Dashboard: React.FC = () => {
     return (
