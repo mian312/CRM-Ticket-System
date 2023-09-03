@@ -3,10 +3,12 @@ import { Container, Row, Col, Button } from "react-bootstrap";
 import TicketTable from "../../../Components/Tickets/TicketTable";
 import tickets from "../../../assets/data/dummy-tickets.json";
 import { BreadCrumb } from "../../../Components/BreadCrumbs/BreadCrumb";
+import { Helmet } from "react-helmet-async";
 
 export const Dashboard: React.FC = () => {
     return (
         <Container>
+            <Helmet><title>Ticket Dashboard</title></Helmet>
             <Row>
                 <Col>
                     <BreadCrumb page="Dashboard" />

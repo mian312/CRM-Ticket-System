@@ -3,6 +3,7 @@ import './Entry.style.css';
 import LoginForm from "../../Components/Auth/LoginForm";
 import ResetPassword from "../../Components/Auth/ResetPassword";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Entry: React.FC = () => {
     const navigate = useNavigate();
@@ -51,6 +52,7 @@ const Entry: React.FC = () => {
 
     return (
         <div className="entry-page">
+            <Helmet><title>Login to Continue</title></Helmet>
             <div className="form-box jumbotron">
                 {frmLoad === "login" && (
                     <LoginForm
