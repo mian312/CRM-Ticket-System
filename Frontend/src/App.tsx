@@ -10,6 +10,7 @@ import Entry from './Pages/Entry/Entry.pg';
 import { Dashboard } from './Pages/Dashboard/Dashboard';
 import { AddTicket } from './Pages/New-Ticket/AddTicket';
 import TicketLists from './Pages/Ticket-Listing/TicketLists';
+import ViewTicket from './Pages/View-Ticket/ViewTicket';
 
 export default function App() {
   return (
@@ -19,6 +20,7 @@ export default function App() {
         <Route path='/dashboard' Component={Dashboard} />
         <Route path='/add-ticket' Component={AddTicket} />
         <Route path='/tickets' Component={TicketLists} />
+        <Route path='/tickets/:id' Component={ViewTicket} />
       </Routes>
     </DefaultLayout>
   )
