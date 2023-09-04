@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import SearchForm from "../../Components/Search/SearchForm";
-import TicketTable from "../../Components/Tickets/TicketTable";
+import TicketTable from "../../Components/Tickets/TicketTable/TicketTable";
 import { BreadCrumb } from "../../Components/BreadCrumbs/BreadCrumb";
 import tickets from "../../assets/data/dummy-tickets.json";
 import { Ticket } from '../../assets/interface/interface';

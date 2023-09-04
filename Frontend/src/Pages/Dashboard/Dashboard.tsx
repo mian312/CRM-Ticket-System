@@ -2,7 +2,7 @@ import React from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { BreadCrumb } from "../../Components/BreadCrumbs/BreadCrumb";
-import TicketTable from "../../Components/Tickets/TicketTable";
+import TicketTable from "../../Components/Tickets/TicketTable/TicketTable";
 import tickets from "../../assets/data/dummy-tickets.json";
 import { useNavigate } from "react-router-dom";
 

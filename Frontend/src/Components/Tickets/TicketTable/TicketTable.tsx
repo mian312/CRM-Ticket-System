@@ -1,6 +1,6 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
-import { Ticket } from '../../assets/interface/interface';
+import { Ticket } from '../../../assets/interface/interface';
 
 interface TicketTableProps {
   tickets: Ticket[];
