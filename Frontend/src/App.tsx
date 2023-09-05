@@ -20,7 +20,7 @@ export default function App() {
         <Route path='/dashboard' Component={Dashboard} />
         <Route path='/add-ticket' Component={AddTicket} />
         <Route path='/tickets' Component={TicketLists} />
-        <Route path='/tickets/:id' Component={ViewTicket} />
+        <Route path='/tickets/:tId' Component={ViewTicket} />
       </Routes>
     </DefaultLayout>
   )

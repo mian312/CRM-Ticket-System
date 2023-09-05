@@ -4,6 +4,7 @@ import LoginForm from "../../Components/Auth/LoginForm";
 import ResetPassword from "../../Components/Auth/ResetPassword";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
 
 const Entry: React.FC = () => {
     const navigate = useNavigate();
@@ -31,12 +32,8 @@ const Entry: React.FC = () => {
     const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (!email || !password) {
-            return alert("Fill up all the form!");
-        }
-
         // TODO call api to submit the form
-        console.log("Email : ",email,"\n Password :", password);
+        toast.success('Successfully Logged In')
         navigate('/app')
     };
     const handleOnResetSubmit = (e: React.FormEvent<HTMLFormElement>) => {

@@ -1,14 +1,13 @@
 import React from 'react';
 import { Table } from 'react-bootstrap';
 import { Ticket } from '../../../assets/interface/interface';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 interface TicketTableProps {
   tickets: Ticket[];
 }
 
 const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
-const navigate = useNavigate();
 
   return (
     <Table striped bordered hover>
@@ -23,9 +22,11 @@ const navigate = useNavigate();
       <tbody>
         {tickets.length ? (
           tickets.map((row) => (
-            <tr key={row.id} onClick={() => navigate(`/tickets/${row.id}`)}>
+            <tr key={row.id}>
               <td>{row.id}</td>
-              <td>{row.subject}</td>
+              <td>
+                <Link to={`/tickets/${row.id}`}>{row.subject}</Link>
+                </td>
               <td>{row.status}</td>
               <td>{row.addedAt}</td>
             </tr>

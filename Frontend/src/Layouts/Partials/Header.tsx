@@ -1,9 +1,19 @@
 import React from "react";
 import { Navbar, Nav } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
+import { toast } from "react-toastify";
 
 export const Header: React.FC = () => {
+  const navigate = useNavigate();
+
+  const logMeOut = () => {
+    // TODO user 'logout' logic
+    
+    toast.warning('Succesfully logged out')
+    navigate('/')
+  }
+
   return (
     <Navbar collapseOnSelect bg="info" variant="dark" expand="md">
       <Navbar.Brand className="ps-1">
@@ -12,9 +22,13 @@ export const Header: React.FC = () => {
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ms-auto">
-          <Nav.Link className="px-2"><Link to={'/tickets'}>Tickets</Link></Nav.Link>
-          <Nav.Link className="px-2"><Link to={'/dashboard'}>Dashboard</Link></Nav.Link>
-          <Nav.Link className="px-2"><Link to={'/Logout'}>Logout</Link></Nav.Link>
+          <Nav.Link className="px-2">
+            <Link to={'/tickets'}>Tickets</Link>
+          </Nav.Link>
+          <Nav.Link className="px-2">
+            <Link to={'/dashboard'}>Dashboard</Link>
+          </Nav.Link>
+          <Nav.Link className="px-2" onClick={logMeOut}>Logout</Nav.Link>
         </Nav>
       </Navbar.Collapse>
     </Navbar>
