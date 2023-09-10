@@ -1,7 +1,7 @@
 import { Router } from "express";
 // import { route } from "./ticket.router";
-import { insertUser } from "../model/user/User.model.js";
-import { hashPassword } from "../helpers/bcrypt.helper.js";
+import { getUserByEmail, insertUser } from "../model/user/User.model.js";
+import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 const router = Router();
 
 router.all("/", (req, res, next) => {
@@ -34,4 +34,28 @@ router.post("/", async (req, res) => {
     res.json({ statux: "error", message: error.message });
   }
 });
+
+//User sign in Router
+router.post("/login", async (req, res) => {
+  // console.log(req.body);
+
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.json({ status: "error", message: "Invalid form submition!" });
+  }
+
+  const user = await getUserByEmail(email);
+
+  const passFromDb = user && user._id ? user.password : null;
+
+  if (!passFromDb)
+    return res.json({ status: "error", message: "Invalid email or password!" });
+
+  const result = await comparePassword(password, passFromDb);
+  // console.log(result);
+
+  res.json({ status: "success", message: "Login Successfully!" });
+});
+
 export default router;
