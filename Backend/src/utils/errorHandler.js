@@ -6,4 +6,4 @@ const handleError = (error, res) => {
     });
 };
 
-module.exports = handleError;
+export default handleError;

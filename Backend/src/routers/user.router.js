@@ -1,9 +1,11 @@
-const express = require("express");
-const router = express.Router();
+import { Router } from "express";
+const router = Router();
 
 router.all("/", (req, res, next) => {
 //   console.log(name);
   res.json({ message: "return form user router" });
 });
 
-module.exports = router;
+
+
+export default router;
