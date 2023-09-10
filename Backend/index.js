@@ -3,16 +3,40 @@ import pkg from 'body-parser';
 import cors from "cors";
 import helmet from "helmet";
 import morgan from "morgan";
+import mongoose from "mongoose";
+import dotenv from 'dotenv';
 
 // Declaring constants
 const app = express();
 const { urlencoded, json } = pkg;
+dotenv.config();
 
 //API security
 app.use(helmet());
 
 //handle CORS error
 app.use(cors());
+
+//MongoDB Connection Setup
+
+mongoose.connect(process.env.MONGO_URL, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  // useFindAndModify: false,
+  // useCreateIndex: true,
+});
+
+if (process.env.NODE_ENV !== "production") {
+  const mDb = mongoose.connection;
+  mDb.on("open", () => {
+    console.log("MongoDB is conneted");
+  });
+
+  mDb.on("error", (error) => {
+    console.error("MongoDB connection error:", error);
+  });  
+}
+
 
 //Logger
 app.use(morgan("tiny"));
