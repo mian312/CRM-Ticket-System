@@ -20,11 +20,13 @@ const UsersSchema = new Schema({
   phone: {
     type: Number,
     maxlength: 11,
+    require: true,
   },
   email: {
     type: String,
     maxlength: 50,
     required: true,
+    unique: true,
   },
   password: {
     type: String,
