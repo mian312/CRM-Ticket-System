@@ -58,11 +58,38 @@ const getUserByPhone = (phone) => {
   });
 };
 
+const storeUserRefreshJWT = (_id, token) => {
+  return new Promise((resolve, reject) => {
+    try {
+      UserSchema.findOneAndUpdate(
+        { _id },
+        {
+          $set: { "refreshJWT.token": token, "refreshJWT.addedAt": Date.now() },
+        },
+        { new: true }
+      )
+        .then((data) => {
+          if (data) {
+            resolve(data);
+          } else {
+            reject(new Error("Document not found"));
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 
 
 
 export {
   insertUser,
   getUserByEmail,
-  getUserByPhone
+  getUserByPhone,
+  storeUserRefreshJWT,
 };

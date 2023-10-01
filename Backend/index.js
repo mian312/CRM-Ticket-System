@@ -18,13 +18,13 @@ app.use(helmet());
 app.use(cors());
 
 //MongoDB Connection Setup
-
 mongoose.connect(process.env.MONGO_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   // useFindAndModify: false,
   // useCreateIndex: true,
 });
+
 
 if (process.env.NODE_ENV !== "production") {
   const mDb = mongoose.connection;

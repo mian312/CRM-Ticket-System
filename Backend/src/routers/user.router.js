@@ -54,49 +54,58 @@ router.post("/signup", async (req, res) => {
 
 //* User Sign In Route
 router.post("/login", async (req, res) => {
-  const { input, password } = req.body;
+  try {
+    const { input, password } = req.body;
 
-  //^ Check if both input and password are provided
-  if (!input || !password) {
-    return res.status(400).json({ status: "error", message: "Invalid form submission!" });
+    //^ Check if both input and password are provided
+    if (!input || !password) {
+      return res.status(400).json({ status: "error", message: "Invalid form submission!" });
+    }
+
+    //^ Check if the input is an email or phone number
+    let user;
+    if (input.includes('@')) {
+      //^ Input is an email, use getUserByEmail to fetch user data
+      user = await getUserByEmail(input);
+    } else {
+      //^ Input is a phone number, use getUserByPhone to fetch user data
+      user = await getUserByPhone(input);
+    }
+
+    //^ Check if a user with the given input exists
+    const passFromDb = user && user._id ? user.password : null;
+
+    if (!passFromDb) {
+      return res.status(400).json({ status: "error", message: "Invalid user input!" });
+    }
+
+    //^ Check if the user has provided the correct password
+    const result = await comparePassword(password, passFromDb);
+
+    if (!result) {
+      return res.status(400).json({ status: "error", message: "Invalid password!" });
+    }
+
+    //^ Generate access and refresh JWT tokens
+    const refreshJWT = await createRefreshJWT(user.email, `${user._id}`);
+    const accessJWT = await createAccessJWT(user.email, `${user._id}`); 
+    // Q:  ${user._id} converts the _id value (which might be a number) to a string, regardless of whether _id is originally a string or a number.
+
+    //^ Respond with a success message and the tokens
+    return res.status(200).json({
+      status: "success",
+      message: "Login Successfully!",
+      accessJWT,
+      refreshJWT,
+    });
+  } catch (error) {
+    console.error(error);
+
+    //^ Handle other errors that might occur during login
+    return res.status(500).json({ status: "error", message: "Internal server error" });
   }
-
-  //^ Check if the input is an email or phone number
-  let user;
-  if (input.includes('@')) {
-    //^ Input is an email, use getUserByEmail to fetch user data
-    user = await getUserByEmail(input);
-  } else {
-    //^ Input is a phone number, use getUserByPhone to fetch user data
-    user = await getUserByPhone(input);
-  }
-
-  //^ Check if a user with the given input exists
-  const passFromDb = user && user._id ? user.password : null;
-
-  if (!passFromDb) {
-    return res.status(400).json({ status: "error", message: "Invalid user input!" });
-  }
-
-  //^ Check if the user has provided the correct password
-  const result = await comparePassword(password, passFromDb);
-
-  if (!result) {
-    return res.status(400).json({ status: "error", message: "Invalid password!" });
-  }
-
-  //^ Generate access and refresh JWT tokens
-  const accessJWT = await createAccessJWT(user.email);
-  const refreshJWT = await createRefreshJWT(user.email);
-
-  //^ Respond with a success message and the tokens
-  return res.status(200).json({
-    status: "success",
-    message: "Login Successfully!",
-    accessJWT,
-    refreshJWT,
-  });
 });
+
 
 
 
