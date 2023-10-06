@@ -1,13 +1,14 @@
 import { Router } from "express";
 // import { route } from "./ticket.router";
-import { getUserByEmail, getUserByPhone, insertUser } from "../model/user/User.model.js";
+import { getUserByEmail, getUserById, getUserByPhone, insertUser } from "../model/user/User.model.js";
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 import { createAccessJWT, createRefreshJWT } from "../helpers/jwt.helper.js";
+import { userAuthorization } from "../middleware/authorization.middleware.js";
 const router = Router();
 
 router.get("/", (req, res, next) => {
   //   console.log(name);
-  // res.json({ message: "return form user router" });
+  res.json({ message: "return form user router" });
   next();
 });
 
@@ -51,7 +52,6 @@ router.post("/signup", async (req, res) => {
 });
 
 
-
 //* User Sign In Route
 router.post("/login", async (req, res) => {
   try {
@@ -88,8 +88,10 @@ router.post("/login", async (req, res) => {
 
     //^ Generate access and refresh JWT tokens
     const refreshJWT = await createRefreshJWT(user.email, `${user._id}`);
-    const accessJWT = await createAccessJWT(user.email, `${user._id}`); 
-    // Q:  ${user._id} converts the _id value (which might be a number) to a string, regardless of whether _id is originally a string or a number.
+    const accessJWT = await createAccessJWT(user.email, `${user._id}`);
+    /**
+     * ${user._id} converts the _id value (which might be a number) to a string, regardless of whether _id is originally a string or a number.
+     */
 
     //^ Respond with a success message and the tokens
     return res.status(200).json({
@@ -107,7 +109,17 @@ router.post("/login", async (req, res) => {
 });
 
 
+//* Get user profile router
+router.post("/", userAuthorization, async (req, res) => {
+  //^ 1. get user id from request objec
+  const _id = req.userId;
+//^ 2. get user profile based on the user id
+  const userProf = await getUserById(_id);
+  //3. extract user id
+  //4. get user profile based on the user id
 
+  return res.json({ user: userProf });
+});
 
 
 export default router;

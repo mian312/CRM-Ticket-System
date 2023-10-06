@@ -58,9 +58,37 @@ const getUserByPhone = (phone) => {
   });
 };
 
+// Function to retrieve a user by their ID
+const getUserById = async (_id) => {
+  // Check if the _id parameter is not provided or falsy, and if so, return false
+  if (!_id) return false;
+
+  try {
+    // Use the UserSchema to find a user with the provided _id
+    const data = await UserSchema.findById(_id).exec();
+
+    if (!data) {
+      // Handle the case where no user was found
+      return null;
+    }
+
+    // If the query is successful, return the user data
+    return data;
+  } catch (error) {
+    // Handle any errors that occurred during the database query
+    console.error(error);
+    throw error; // Re-throw the error to be handled further up the call stack
+  }
+
+};
+
+
+// Function to store a user's refresh JWT token
 const storeUserRefreshJWT = (_id, token) => {
+  // Create and return a Promise to handle asynchronous operations
   return new Promise((resolve, reject) => {
     try {
+      // Use the UserSchema to find and update a user document based on their _id
       UserSchema.findOneAndUpdate(
         { _id },
         {
@@ -69,16 +97,20 @@ const storeUserRefreshJWT = (_id, token) => {
         { new: true }
       )
         .then((data) => {
+          // If the update is successful and data is returned, resolve the Promise with the updated data
           if (data) {
             resolve(data);
           } else {
+            // If no data is returned, reject the Promise with an error indicating that the document was not found
             reject(new Error("Document not found"));
           }
         })
         .catch((error) => {
+          // If an error occurs during the update, reject the Promise with the error
           reject(error);
         });
     } catch (error) {
+      // If an error occurs in the try block, reject the Promise with the error
       reject(error);
     }
   });
@@ -91,5 +123,6 @@ export {
   insertUser,
   getUserByEmail,
   getUserByPhone,
+  getUserById,
   storeUserRefreshJWT,
 };
