@@ -111,12 +111,10 @@ router.post("/login", async (req, res) => {
 
 //* Get user profile router
 router.post("/", userAuthorization, async (req, res) => {
-  //^ 1. get user id from request objec
+  //^ get user id from request object
   const _id = req.userId;
-//^ 2. get user profile based on the user id
+//^ get user profile based on the user _id
   const userProf = await getUserById(_id);
-  //3. extract user id
-  //4. get user profile based on the user id
 
   return res.json({ user: userProf });
 });

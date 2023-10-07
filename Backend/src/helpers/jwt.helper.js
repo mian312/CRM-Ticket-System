@@ -7,7 +7,7 @@ const createAccessJWT = async (email, _id) => {
   try {
     //^ Sign the JWT token with the user's email and set an expiration of 15 minutes
     const accessJWT = jwt.sign({ email }, process.env.JWT_ACCESS_SECRET, {
-      expiresIn: "15m",
+      expiresIn: `${process.env.JWT_ACCESS_SECRET_EXP_DAY}d`,
     });
 
     //^ Store the JWT token in Redis using the user's _id as the key
@@ -25,8 +25,8 @@ const createAccessJWT = async (email, _id) => {
 //^ Sign the JWT token with the provided payload and set an expiration of 30 days
 const createRefreshJWT = async (email, _id) => {
   try {
-    const refreshJWT = jwt.sign({ email }, process.env.JWT_ACCESS_SECRET, {
-      expiresIn: "30d",
+    const refreshJWT = jwt.sign({ email }, process.env.JWT_REFRESH_SECRET, {
+      expiresIn: `${process.env.JWT_REFRESH_SECRET_EXP_DAY}d`,
     });
 
     //^ Store the JWT token using the user's _id as the key
@@ -49,7 +49,7 @@ const createRefreshJWT = async (email, _id) => {
 //   }
 // };
 
-//* Create verify JWT token which is not a promise
+//* Create verify Access JWT token
 const verifyAccessJWT = (userJWT) => {
   try {
     return jwt.verify(userJWT, process.env.JWT_ACCESS_SECRET);
@@ -58,9 +58,18 @@ const verifyAccessJWT = (userJWT) => {
   }
 }
 
+//* Create verify Refresh JWT token
+const verifyRefreshJWT = (userJWT) => {
+  try {
+    return jwt.verify(userJWT, process.env.JWT_REFRESH_SECRET);
+  } catch (error) {
+    return error;
+  }
+}
 
 export {
   createAccessJWT,
   createRefreshJWT,
-  verifyAccessJWT
+  verifyAccessJWT,
+  verifyRefreshJWT
 };

@@ -50,10 +50,12 @@ const port = process.env.PORT || 5000;
 //Load routers
 import userRouter from "./src/routers/user.router.js";
 import ticketRouter from "./src/routers/ticket.router.js";
+import tokenRouter from "./src/routers/token.router.js";
 
 //Use Routers
 app.use("/api/user", userRouter);
 app.use("/api/ticket", ticketRouter);
+app.use("/api/tokens", tokenRouter)
 
 //Error handler
 import handleError from "./src/utils/errorHandler.js";

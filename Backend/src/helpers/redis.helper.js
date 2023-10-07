@@ -37,7 +37,20 @@ const getJWT = async (key) => {
     }
 };
 
+// Function to delete a JWT token from Redis using a key
+const deleteJWT = async (key) => {
+    try {
+        // Delete the value associated with the key from Redis and await the result
+        const res = await client.del(key);
+        return res;
+    } catch (err) {
+        // Throw an error if there's an issue
+        throw err;
+    }
+}
+
 export {
     setJWT,
-    getJWT
+    getJWT,
+    deleteJWT
 };
