@@ -4,6 +4,7 @@ import { getUserByEmail, getUserById, getUserByPhone, insertUser } from "../mode
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 import { createAccessJWT, createRefreshJWT } from "../helpers/jwt.helper.js";
 import { userAuthorization } from "../middleware/authorization.middleware.js";
+import { setPasswordResetPin } from "../model/restPin/restPin.model.js";
 const router = Router();
 
 router.get("/", (req, res, next) => {
@@ -113,11 +114,38 @@ router.post("/login", async (req, res) => {
 router.post("/", userAuthorization, async (req, res) => {
   //^ get user id from request object
   const _id = req.userId;
-//^ get user profile based on the user _id
+  //^ get user profile based on the user _id
   const userProf = await getUserById(_id);
 
   return res.json({ user: userProf });
 });
 
+
+//* Reset user password router
+router.post("/reset-password", async (req, res) => {
+  const { input } = req.body;
+
+  //^ Check if the input is an email or phone number
+  let user;
+  if (input.includes('@')) {
+    //^ Input is an email, use getUserByEmail to fetch user data
+    user = await getUserByEmail(input);
+  } else {
+    //^ Input is a phone number, use getUserByPhone to fetch user data
+    user = await getUserByPhone(input);
+  }
+
+  if (user && user._id) {
+    //^ create unique 6 digit pin
+    const setPin = await setPasswordResetPin(input);
+    return res.json(setPin);
+  }
+
+  return res.json({
+    status: "error",
+    message:
+      "If the email is exist in our database, the password reset pin will be sent shortly.",
+  });
+});
 
 export default router;
