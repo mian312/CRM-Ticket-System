@@ -1,11 +1,11 @@
 import { Router } from "express";
 // import { route } from "./ticket.router";
-import { getUserByEmail, getUserById, getUserByPhone, insertUser } from "../model/user/User.model.js";
+import { getUserByEmail, getUserById, getUserByPhone, insertUser, updatePassword } from "../model/user/User.model.js";
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 import { createAccessJWT, createRefreshJWT } from "../helpers/jwt.helper.js";
 import { userAuthorization } from "../middleware/authorization.middleware.js";
-import { setPasswordResetPin } from "../model/restPin/restPin.model.js";
-import { emailProcessor, sendSMS } from "../helpers/pin.helper.js";
+import { deletePin, getPinByInput, setPasswordResetPin } from "../model/restPin/RestPin.model.js";
+import { emailProcessor, smsProcessor } from "../helpers/pin.helper.js";
 const router = Router();
 
 router.get("/", (req, res, next) => {
@@ -143,10 +143,19 @@ router.post("/reset-password", async (req, res) => {
     let result;
     if (input.includes('@')) {
       //^ Input is an email, use getUserByEmail to fetch user data
-      result = await emailProcessor(input, setPin.pin);
+      await emailProcessor({
+        email: input,
+        pin: setPin.pin,
+        type: "request-new-password",
+      });
     } else {
       //^ Input is a phone number, use getUserByPhone to fetch user data
-      result = await sendSMS(input, setPin.pin);
+      await smsProcessor({
+        phoneNumber: input,
+        pin: setPin.pin,
+        type: "request-new-password",
+      });
+
     }
 
     return res.json({
@@ -162,5 +171,72 @@ router.post("/reset-password", async (req, res) => {
       "couldn't find user with the given input. Please check your input and try again",
   });
 });
+
+
+/**
+ * Endpoint for resetting the user's password.
+ */
+router.patch("/reset-password", async (req, res) => {
+  // 1. Extract email, PIN, and new password from the request body
+  const { input, pin, newPassword } = req.body;
+
+  // 2. Check if the provided PIN is valid and exists in the database
+  const getPin = await getPinByInput(input, pin);
+
+  if (getPin._id) {
+    // 3. Check if the PIN hasn't expired
+    const dbDate = getPin.addedAt;
+    const expiresIn = 1;
+
+    let expDate = dbDate.setDate(dbDate.getDate() + expiresIn);
+
+    const today = new Date();
+
+    if (today > expDate) {
+      // 4. If the PIN is expired, return an error response
+      return res.json({ status: "error", message: "Invalid or expired PIN." });
+    }
+
+    // 5. Encrypt the new password
+    const hashedPass = await hashPassword(newPassword);
+
+    // 6. Update the user's password in the database
+    const user = await updatePassword(input, hashedPass);
+
+    if (user._id) {
+      // 7. Send an email or sms notification for the password update
+      if (input.includes('@')) {
+        await emailProcessor({
+          email: input,
+          pin: pin,
+          type: "update-password-success"
+        });
+      } else {
+        await smsProcessor({
+          phoneNumber: input,
+          pin: pin,
+          type: "update-password-success"
+        });
+      }
+
+      // 8. Delete the used PIN from the database
+      deletePin(input, pin);
+
+      // 9. Return a success response
+      return res.json({
+        status: "success",
+        message: "Your password has been updated.",
+      });
+    }
+  }
+
+  // 10. If any step fails, return an error response
+  res.json({
+    status: "error",
+    message: "Unable to update your password. Please try again later.",
+  });
+});
+
+
 
 export default router;

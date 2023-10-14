@@ -13,6 +13,11 @@ const ResetPinSchema = new Schema({
         maxlength: 50,
         required: true,
     },
+    addedAt: {
+        type: Date,
+        required: true,
+        default: Date.now(),
+    },
 });
 
 // Export the model using ES6 module syntax

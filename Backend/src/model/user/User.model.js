@@ -116,6 +116,40 @@ const storeUserRefreshJWT = (_id, token) => {
   });
 };
 
+// Function to update a user's password
+const updatePassword = async (input, newhashedPass) => {
+  try {
+    let query;
+
+    // Check if the input appears to be an email
+    if (input.includes('@')) {
+      query = { email: input };
+    } else {
+      query = { phone: input };
+    }
+
+    // Attempt to find a user by email or phone and update their password
+    const data = await UserSchema.findOneAndUpdate(
+      query,
+      {
+        $set: { password: newhashedPass },
+      },
+      { new: true }
+    ).exec();
+
+    if (data) {
+      // If data is found and updated successfully, return it
+      return data;
+    }
+
+    // If no data is found, return null or handle it as needed
+    return null;
+  } catch (error) {
+    // Handle any errors that occur during the operation
+    console.log(error);
+    throw error;
+  }
+};
 
 
 
@@ -125,4 +159,5 @@ export {
   getUserByPhone,
   getUserById,
   storeUserRefreshJWT,
+  updatePassword
 };
