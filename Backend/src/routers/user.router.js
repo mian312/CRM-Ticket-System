@@ -1,12 +1,13 @@
 import { Router } from "express";
 // import { route } from "./ticket.router";
-import { getUserByEmail, getUserById, getUserByPhone, insertUser, updatePassword } from "../model/user/User.model.js";
+import { getUserByEmail, getUserById, getUserByPhone, insertUser, storeUserRefreshJWT, updatePassword } from "../model/user/User.model.js";
 import { comparePassword, hashPassword } from "../helpers/bcrypt.helper.js";
 import { createAccessJWT, createRefreshJWT } from "../helpers/jwt.helper.js";
 import { userAuthorization } from "../middleware/authorization.middleware.js";
 import { deletePin, getPinByInput, setPasswordResetPin } from "../model/restPin/RestPin.model.js";
 import { emailProcessor, smsProcessor } from "../helpers/pin.helper.js";
 import { resetPassReqValidation, updatePassValidation } from "../middleware/formValidation.middleware.js";
+import { deleteJWT } from "../helpers/redis.helper.js";
 const router = Router();
 
 router.get("/", (req, res, next) => {
@@ -124,7 +125,7 @@ router.post("/", userAuthorization, async (req, res) => {
 
 
 //* Reset user password router
-router.post("/reset-password", resetPassReqValidation,async (req, res) => {
+router.post("/reset-password", resetPassReqValidation, async (req, res) => {
   const { input } = req.body;
 
   //^ Check if the input is an email or phone number
@@ -177,7 +178,7 @@ router.post("/reset-password", resetPassReqValidation,async (req, res) => {
 /**
  * Endpoint for resetting the user's password.
  */
-router.patch("/reset-password", updatePassValidation ,async (req, res) => {
+router.patch("/reset-password", updatePassValidation, async (req, res) => {
   // 1. Extract email, PIN, and new password from the request body
   const { input, pin, newPassword } = req.body;
 
@@ -235,6 +236,30 @@ router.patch("/reset-password", updatePassValidation ,async (req, res) => {
   res.json({
     status: "error",
     message: "Unable to update your password. Please try again later.",
+  });
+});
+
+
+//* User logout and invalidate jwts
+
+router.delete("/logout", userAuthorization, async (req, res) => {
+  const { authorization } = req.headers;
+  //^ this data coming form database
+  const _id = req.userId;
+
+  //^ delete accessJWT from redis database
+  deleteJWT(authorization);
+
+  //^ delete refreshJWT from mongodb
+  const result = await storeUserRefreshJWT(_id, "");
+
+  if (result._id) {
+    return res.json({ status: "success", message: "Loged out successfully" });
+  }
+
+  res.json({
+    status: "error",
+    message: "Unable to logg you out, plz try again later",
   });
 });
 
