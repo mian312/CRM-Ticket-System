@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getTickets, insertTicket } from "../model/ticket/Ticket.model.js";
+import { getTicketById, getTickets, insertTicket } from "../model/ticket/Ticket.model.js";
 import { userAuthorization } from "../middleware/authorization.middleware.js";
 const router = Router();
 
@@ -10,14 +10,16 @@ router.all("/", (req, res, next) => {
 
 
 //* Define router for creating a new ticket
-router.post("/", async (req, res) => {
+router.post("/", userAuthorization, async (req, res) => {
   try {
     // Destructure subject, sender, and message from the request body
     const { subject, sender, message } = req.body;
 
+    const userId = req.userId;
+
     // Create a ticket object with the provided data
     const ticketObj = {
-      clientId: "6526b7ae4d41fb90b946e4f8", // Hardcoded clientId for now
+      clientId: userId,
       subject,
       conversations: [
         {
@@ -67,6 +69,28 @@ router.get("/", userAuthorization, async (req, res) => {
   } catch (error) {
     // If an error occurs, return an error response with the error message
     res.json({ status: "error", message: error.message });
+  }
+});
+
+//* Get specefic ticket of a user
+router.get("/:_id", userAuthorization, async (req, res) => {
+  try {
+    // Retrive the ticket ID from the request parameters
+    const { _id } = req.params;
+
+    // Retrieve the user's ID from the request object
+    const clientId = req.userId;
+    // Call the "getTicketById" function to retrieve the ticket associated with the user
+    const result = await getTicketById(_id, clientId);
+
+    // If the operation is successful, return a JSON response with the ticket
+    return res.json({
+      status: "success",
+      result,
+    });
+  } catch (error) {
+    // If an error occurs, return an error response with the error message
+    return res.json({ status: "error", message: error.message });
   }
 });
 
