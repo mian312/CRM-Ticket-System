@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getTicketById, getTickets, insertTicket, updateClientReply, updateStatusClose } from "../model/ticket/Ticket.model.js";
+import { deleteTicket, getTicketById, getTickets, insertTicket, updateClientReply, updateStatusClose } from "../model/ticket/Ticket.model.js";
 import { userAuthorization } from "../middleware/authorization.middleware.js";
 const router = Router();
 
@@ -114,7 +114,7 @@ router.put("/:_id", userAuthorization, async (req, res) => {
         message: "your message updated",
       });
     }
-    
+
     // If the operation is unsuccessful, return an error response
     return res.json({
       status: "error",
@@ -149,6 +149,36 @@ router.patch("/close-ticket/:_id", userAuthorization, async (req, res) => {
     return res.json({
       status: "error",
       message: "Unable to update the ticket",
+    });
+  } catch (error) {
+    // If an error occurs, return an error response with the error message
+    return res.json({ status: "error", message: error.message });
+  }
+});
+
+// Delete a ticket
+router.delete("/close-ticket/:_id", userAuthorization, async (req, res) => {
+  try {
+    // Retrive the ticket ID from the request parameters
+    const { _id } = req.params;
+    // Retrieve the user's ID from the request object
+    const clientId = req.userId;
+
+    // Call the "deleteTicket" function to delete the ticket
+    const result = await deleteTicket({ _id, clientId });
+
+    // If the operation is successful, return a JSON response with the updated ticket
+    if (result) {
+      return res.json({
+        status: "success",
+        message: "The ticket has been deleted",
+      });
+    }
+
+    // If the operation is unsuccessful, return an error response
+    return res.json({
+      status: "error",
+      message: "Ticket not found",
     });
   } catch (error) {
     // If an error occurs, return an error response with the error message

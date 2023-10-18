@@ -99,10 +99,28 @@ const updateStatusClose = ({ _id, clientId }) => {
 };
 
 
+//* Define function to delete ticket
+const deleteTicket = ({ _id, clientId }) => {
+    // Return a Promise that handles the ticket deletion
+    return new Promise((resolve, reject) => {
+        try {
+            // Create a new instance of the TicketSchema and save it
+            TicketSchema.findOneAndDelete({ _id, clientId })
+                .then((data) => resolve(data))  // If search is successful, resolve with the found data
+                .catch((error) => reject(error));  // If there's an error during search, reject with the error
+        } catch (error) {
+            // Catch and reject any other errors
+            reject(error);
+        }
+    });
+};
+
+
 export {
     insertTicket,
     getTickets,
     getTicketById,
     updateClientReply,
-    updateStatusClose
+    updateStatusClose,
+    deleteTicket
 };
