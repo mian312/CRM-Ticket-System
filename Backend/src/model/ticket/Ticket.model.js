@@ -49,8 +49,60 @@ const getTicketById = (_id, clientId) => {
     });
 };
 
+
+//* Define function to update client reply
+const updateClientReply = ({ _id, message, sender }) => {
+    // Return a Promise that handles the ticket retrieval
+    return new Promise((resolve, reject) => {
+        try {
+            // Create a new instance of the TicketSchema and save it
+            TicketSchema.findOneAndUpdate(
+                { _id },
+                {
+                    status: "Pending operator response",
+                    $push: {
+                        conversations: { message, sender },
+                    },
+                },
+                { new: true }
+            )
+                .then((data) => resolve(data)) // If search is successful, resolve with the found data
+                .catch((error) => reject(error));   // If there's an error during search, reject with the error
+        } catch (error) {
+            // Catch and reject any other errors
+            reject(error);
+        }
+    });
+};
+
+
+//* Define function to update status to close
+const updateStatusClose = ({ _id, clientId }) => {
+    // Return a Promise that handles the ticket retrieval
+    return new Promise((resolve, reject) => {
+        try {
+            // Create a new instance of the TicketSchema and save it
+            TicketSchema.findOneAndUpdate(
+                { _id, clientId },
+                {
+                    status: "Closed",
+                },
+                { new: true }
+            )
+                .then((data) => resolve(data)) // If search is successful, resolve with the found data
+                .catch((error) => reject(error));   // If there's an error during search, reject with the error
+        } catch (error) {
+            // Catch and reject any other errors
+            reject(error);
+        }
+    });
+};
+
+
 export {
     insertTicket,
     getTickets,
-    getTicketById
+    getTicketById,
+    updateClientReply,
+    updateStatusClose
 };

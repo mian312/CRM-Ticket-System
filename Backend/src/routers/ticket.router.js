@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getTicketById, getTickets, insertTicket } from "../model/ticket/Ticket.model.js";
+import { getTicketById, getTickets, insertTicket, updateClientReply, updateStatusClose } from "../model/ticket/Ticket.model.js";
 import { userAuthorization } from "../middleware/authorization.middleware.js";
 const router = Router();
 
@@ -94,5 +94,66 @@ router.get("/:_id", userAuthorization, async (req, res) => {
   }
 });
 
+//* update reply message form client
+router.put("/:_id", userAuthorization, async (req, res) => {
+  try {
+    // Destructure message and sender from the request body
+    const { message, sender } = req.body;
+    // Retrive the ticket ID from the request parameters
+    const { _id } = req.params;
+    // Retrieve the user's ID from the request object
+    const clientId = req.userId;
+
+    // Call the "updateClientReply" function to update the reply message
+    const result = await updateClientReply({ _id, message, sender });
+
+    // If the operation is successful, return a JSON response with the updated ticket
+    if (result._id) {
+      return res.json({
+        status: "success",
+        message: "your message updated",
+      });
+    }
+    
+    // If the operation is unsuccessful, return an error response
+    return res.json({
+      status: "error",
+      message: "Unable to update your message please try again later",
+    });
+  } catch (error) {
+    // If an error occurs, return an error response with the error message
+    return res.json({ status: "error", message: error.message });
+  }
+});
+
+//* update ticket status to close
+router.patch("/close-ticket/:_id", userAuthorization, async (req, res) => {
+  try {
+    // Retrive the ticket ID from the request parameters
+    const { _id } = req.params;
+    // Retrieve the user's ID from the request object
+    const clientId = req.userId;
+
+    // Call the "updateStatusClose" function to update the ticket status to close
+    const result = await updateStatusClose({ _id, clientId });
+
+    // If the operation is successful, return a JSON response with the updated ticket
+    if (result._id) {
+      return res.json({
+        status: "success",
+        message: "The ticket has been closed",
+      });
+    }
+
+    // If the operation is unsuccessful, return an error response
+    return res.json({
+      status: "error",
+      message: "Unable to update the ticket",
+    });
+  } catch (error) {
+    // If an error occurs, return an error response with the error message
+    return res.json({ status: "error", message: error.message });
+  }
+});
 
 export default router;
