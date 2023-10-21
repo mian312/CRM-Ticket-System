@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { deleteTicket, getTicketById, getTickets, insertTicket, updateClientReply, updateStatusClose } from "../model/ticket/Ticket.model.js";
 import { userAuthorization } from "../middleware/authorization.middleware.js";
+import { createNewTicketValidation, replyTicketMessageValidation } from "../middleware/formValidation.middleware.js";
 const router = Router();
 
 router.all("/", (req, res, next) => {
@@ -10,7 +11,7 @@ router.all("/", (req, res, next) => {
 
 
 //* Define router for creating a new ticket
-router.post("/", userAuthorization, async (req, res) => {
+router.post("/", createNewTicketValidation, userAuthorization, async (req, res) => {
   try {
     // Destructure subject, sender, and message from the request body
     const { subject, sender, message } = req.body;
@@ -95,7 +96,7 @@ router.get("/:_id", userAuthorization, async (req, res) => {
 });
 
 //* update reply message form client
-router.put("/:_id", userAuthorization, async (req, res) => {
+router.put("/:_id", replyTicketMessageValidation, userAuthorization, async (req, res) => {
   try {
     // Destructure message and sender from the request body
     const { message, sender } = req.body;

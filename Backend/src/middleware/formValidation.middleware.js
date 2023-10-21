@@ -15,7 +15,11 @@ const pin = Joi.number().min(100000).max(999999).required();
 // Define a Joi schema for new password validation
 const newPassword = Joi.string().alphanum().min(3).max(30).required();
 
-// Validation middleware for reset password request
+// Define Joi schemas for string validation
+const shortStr = Joi.string().min(2).max(50);
+const longStr = Joi.string().min(2).max(1000);
+
+//* Validation middleware for reset password request
 const resetPassReqValidation = (req, res, next) => {
     // Create a Joi schema for email or phone validation
     const schema = Joi.object({ input: emailOrPhone });
@@ -32,7 +36,7 @@ const resetPassReqValidation = (req, res, next) => {
     next();
 };
 
-// Validation middleware for updating the password
+//* Validation middleware for updating the password
 const updatePassValidation = (req, res, next) => {
     // Create a Joi schema for email or phone, PIN, and new password validation
     const schema = Joi.object({ input: emailOrPhone, pin, newPassword });
@@ -49,4 +53,51 @@ const updatePassValidation = (req, res, next) => {
     next();
 };
 
-export { resetPassReqValidation, updatePassValidation };
+//* Validation middleware for creating a new ticket
+const createNewTicketValidation = (req, res, next) => {
+    // Create a Joi schema for subject, sender, and message validation
+    const schema = Joi.object({
+        subject: shortStr.required(),
+        sender: shortStr.required(),
+        message: longStr.required(),
+    });
+
+    // Validate the request body using the schema
+    const value = schema.validate(req.body);
+
+    // If validation fails, send an error response
+    if (value.error) {
+        return res.json({ status: "error", message: value.error.message });
+    }
+
+    // If validation passes, continue to the next middleware
+    next();
+};
+
+//* Validation middleware for replying ticket message
+const replyTicketMessageValidation = (req, res, next) => {
+    // Create a Joi schema for sender and message validation
+    const schema = Joi.object({
+        sender: shortStr.required(),
+        message: longStr.required(),
+    });
+
+    // Validate the request body using the schema
+    const value = schema.validate(req.body);
+
+    // If validation fails, send an error response
+    if (value.error) {
+        return res.json({ status: "error", message: value.error.message });
+    }
+
+    // If validation passes, continue to the next middleware
+    next();
+};
+
+
+export {
+    resetPassReqValidation,
+    updatePassValidation,
+    createNewTicketValidation,
+    replyTicketMessageValidation
+};
