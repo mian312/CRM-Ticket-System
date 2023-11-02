@@ -7,16 +7,23 @@ import UpdateTicket from "../../Components/Tickets/Update-Ticket/UpdateTicket";
 import { useParams } from "react-router-dom";
 import { Ticket } from "../../assets/interface/interface";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
+import Loading from "../../Components/Shared/Loading";
+import Error from "../../Components/Shared/Error";
 
 const ViewTicket: React.FC = () => {
     const { tId } = useParams<{ tId: string }>(); // Specify the type for tId
 
     const [message, setMessage] = useState<string>("");
     const [ticket, setTicket] = useState<Ticket | undefined>(); // Initialize ticket as undefined
+    const { searchTicketList, isLoading, error } = useSelector(
+        (state: any) => state.tickets
+    );
+
 
     useEffect(() => {
-        const foundTickets = tickets.filter((ticket) =>
-            ticket.id === Number(tId)
+        const foundTickets = searchTicketList.filter((ticket: Ticket) =>
+            ticket._id === tId
         );
         console.log("Found Tickets:", foundTickets);
 
@@ -38,6 +45,9 @@ const ViewTicket: React.FC = () => {
         toast.success("Form submitted!"); // Corrected the typo in "submitted"
     };
 
+    if (isLoading) return <Loading />;
+    if (error) return <Error Error={error} />;
+
     return (
         <Container>
             <Row>
@@ -50,7 +60,7 @@ const ViewTicket: React.FC = () => {
                     {ticket && (
                         <>
                             <div className="subject">Subject: {ticket.subject}</div>
-                            <div className="date">Ticket Opened: {ticket.addedAt}</div>
+                            <div className="date">Ticket Opened: {ticket.openAt}</div>
                             <div className="status">Status: {ticket.status}</div>
                         </>
                     )}
@@ -61,7 +71,7 @@ const ViewTicket: React.FC = () => {
             </Row>
             <Row className="mt-4">
                 <Col>
-                    <MessageHistory msg={ticket?.history || []} />
+                    <MessageHistory msg={ticket?.conversations || []} />
                 </Col>
             </Row>
             <hr />

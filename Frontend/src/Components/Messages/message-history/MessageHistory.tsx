@@ -1,11 +1,6 @@
 import React from "react";
 import "./message-history.style.css";
-
-interface Message {
-    messageBy: string;
-    date: string;
-    message: string;
-}
+import { Message } from "../../../assets/interface/interface";
 
 interface MessageHistoryProps {
     msg: Message[] | null; // Allow msg to be null
@@ -20,8 +15,8 @@ const MessageHistory: React.FC<MessageHistoryProps> = ({ msg }) => {
             {msg.map((row, i) => (
                 <div key={i} className="message-history mt-3">
                     <div className="send font-weight-bold text-secondary">
-                        <div className="sender">{row.messageBy}</div>
-                        <div className="date">{row.date}</div>
+                        <div className="sender">{row.sender}</div>
+                        <div className="date">{row.msgAt}</div>
                     </div>
                     <div className="message">{row.message}</div>
                 </div>

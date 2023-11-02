@@ -1,13 +1,13 @@
-interface HistoryItem {
-    date: string;
+export interface Message {
+    sender: string;
+    msgAt: string;
     message: string;
-    messageBy: string; // Assuming it can only be one of these two values
 }
 
 export interface Ticket {
-    id: number;
+    _id: string;
     subject: string;
     status: string;
-    addedAt: string;
-    history?: HistoryItem[];
+    openAt: string;
+    conversations?: Message[];
 }

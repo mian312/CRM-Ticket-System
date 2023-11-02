@@ -8,6 +8,7 @@ interface TicketTableProps {
 }
 
 const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
+  console.log("tickets:", tickets)
 
   return (
     <Table striped bordered hover>
@@ -22,13 +23,13 @@ const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
       <tbody>
         {tickets.length ? (
           tickets.map((row) => (
-            <tr key={row.id}>
-              <td>{row.id}</td>
+            <tr key={row._id}>
+              <td>{row._id}</td>
               <td>
-                <Link to={`/tickets/${row.id}`}>{row.subject}</Link>
+                <Link to={`/tickets/${row._id}`}>{row.subject}</Link>
                 </td>
               <td>{row.status}</td>
-              <td>{row.addedAt}</td>
+              <td>{row.openAt}</td>
             </tr>
           ))
         ) : (
