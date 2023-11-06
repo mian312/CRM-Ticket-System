@@ -23,10 +23,10 @@ const TicketLists: React.FC = () => {
     );
 
 
-    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { value } = e.target;
         setStr(value)
-
+        //! Argument type '(disptch: Dispatch) => void' is not assignable to parameter type 'AnyAction'
         dispatch(filterSearchTicket(value));
     };
 
@@ -39,11 +39,12 @@ const TicketLists: React.FC = () => {
     // };
 
     useEffect(() => {
+        //! Argument type '(disptch: Dispatch) => Promise<void>' is not assignable to parameter type 'AnyAction'
         dispatch(fetchAllTickets());
     }, [dispatch]);
 
-    if (isLoading) return <Loading/>;
-    if (error) return <Error Error={error}/>;
+    if (isLoading) return <Loading />;
+    if (error) return <Error Error={error} />;
 
     return (
         <Container>

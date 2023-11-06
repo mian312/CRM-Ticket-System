@@ -5,19 +5,24 @@ import ResetPassword from "../../Components/Auth/ResetPassword";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { loginFail, loginPending, loginSuccess } from "./loginSlice";
+import { userLogin } from "../../api/UserApi";
 
 const Entry: React.FC = () => {
     const navigate = useNavigate();
-    const [email, setEmail] = useState("");
+    const [input, setInput] = useState("");
     const [password, setPassword] = useState("");
     const [frmLoad, setFrmLoad] = useState("login");
+    const dispatch = useDispatch();
+
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
 
         switch (name) {
-            case "email":
-                setEmail(value);
+            case "input":
+                setInput(value);
                 break;
 
             case "password":
@@ -29,18 +34,36 @@ const Entry: React.FC = () => {
         }
     };
 
-    const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleOnSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // TODO call api to submit the form
-        toast.success('Successfully Logged In')
-        navigate('/app')
+        if (!input || !password) {
+            return alert("Fill up all the form!");
+        }
+
+        dispatch(loginPending());
+
+        try {
+            const isAuth: any = await userLogin({ input, password });
+            console.log(isAuth);
+
+            if (isAuth.status === "error") {
+                return dispatch(loginFail(isAuth.message));
+            }
+
+            dispatch(loginSuccess());
+            toast.success("Login Successful!");
+            navigate("/dashboard");
+        } catch (error: any) {
+            dispatch(loginFail(error.message));
+            toast.error(error.message);
+        }
     };
     const handleOnResetSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         // TODO call api to submit the form
-        console.log("Email : ",email);
+        console.log("Input : ", input);
     };
 
     const formSwitcher = (frmType: string) => {
@@ -56,7 +79,7 @@ const Entry: React.FC = () => {
                         handleOnChange={handleOnChange}
                         handleOnSubmit={handleOnSubmit}
                         formSwitcher={formSwitcher}
-                        email={email}
+                        input={input}
                         pass={password}
                     />
                 )}
@@ -66,7 +89,7 @@ const Entry: React.FC = () => {
                         handleOnChange={handleOnChange}
                         handleOnResetSubmit={handleOnResetSubmit}
                         formSwitcher={formSwitcher}
-                        email={email}
+                        input={input}
                     />
                 )}
             </div>
