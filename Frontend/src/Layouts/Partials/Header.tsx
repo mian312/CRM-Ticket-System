@@ -3,15 +3,20 @@ import { Navbar, Nav } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
 import { toast } from "react-toastify";
+import { userLogout } from "../../api/UserApi";
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
 
   const logMeOut = () => {
-    // TODO user 'logout' logic
-    
-    toast.warning('Succesfully logged out')
-    navigate('/')
+    try {
+      userLogout();
+      sessionStorage.removeItem("accessJWT");
+      toast.success("Logged out successfully")
+      navigate('/')
+    } catch (error) {
+      toast.warning("Something went wrong! Please try again later")
+    }
   }
 
   return (

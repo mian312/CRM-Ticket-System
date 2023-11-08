@@ -8,6 +8,7 @@ import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
 import { loginFail, loginPending, loginSuccess } from "./loginSlice";
 import { userLogin } from "../../api/UserApi";
+import { getUserProfile } from "../Dashboard/userAction";
 
 const Entry: React.FC = () => {
     const navigate = useNavigate();
@@ -52,6 +53,7 @@ const Entry: React.FC = () => {
             }
 
             dispatch(loginSuccess());
+            dispatch(getUserProfile());
             toast.success("Login Successful!");
             navigate("/dashboard");
         } catch (error: any) {

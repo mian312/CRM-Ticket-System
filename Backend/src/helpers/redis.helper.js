@@ -21,7 +21,7 @@ const setJWT = async (key, value) => {
         return res;
     } catch (err) {
         // Throw an error if there's an issue
-        throw err;
+        return err;
     }
 };
 
@@ -33,7 +33,7 @@ const getJWT = async (key) => {
         return res;
     } catch (err) {
         // Throw an error if there's an issue
-        throw err;
+        return err;
     }
 };
 
@@ -45,7 +45,7 @@ const deleteJWT = async (key) => {
         return res;
     } catch (err) {
         // Throw an error if there's an issue
-        throw err;
+        return err;
     }
 }
 
