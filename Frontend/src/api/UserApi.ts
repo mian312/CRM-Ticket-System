@@ -42,6 +42,8 @@ export const fetchUser = () => {
 
             // Calling the API
             const res = await Axios.post('/api/user', {
+                // Sending empty JSON body
+            }, {
                 headers: {
                     authorization: accessJWT,
                 },

@@ -5,7 +5,7 @@ import ResetPassword from "../../Components/Auth/ResetPassword";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { loginFail, loginPending, loginSuccess } from "./loginSlice";
 import { userLogin } from "../../api/UserApi";
 import { getUserProfile } from "../Dashboard/userAction";
@@ -46,7 +46,6 @@ const Entry: React.FC = () => {
 
         try {
             const isAuth: any = await userLogin({ input, password });
-            console.log(isAuth);
 
             if (isAuth.status === "error") {
                 return dispatch(loginFail(isAuth.message));
