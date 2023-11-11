@@ -1,27 +1,41 @@
-import React from 'react'
+import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-import {
-  Route,
-  Routes
-} from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { DefaultLayout } from './Layouts/DefaultLayout';
 import Entry from './Pages/Entry/Entry.pg';
 import { Dashboard } from './Pages/Dashboard/Dashboard';
 import { AddTicket } from './Pages/New-Ticket/AddTicket';
 import TicketLists from './Pages/Ticket-Listing/TicketLists';
 import ViewTicket from './Pages/View-Ticket/ViewTicket';
+import PrivateRoute from './Layouts/PrivateRoute';
 
 export default function App() {
   return (
     <DefaultLayout>
       <Routes>
-        <Route path='/' Component={Entry} />
-        <Route path='/dashboard' Component={Dashboard} />
-        <Route path='/add-ticket' Component={AddTicket} />
-        <Route path='/tickets' Component={TicketLists} />
-        <Route path='/tickets/:tId' Component={ViewTicket} />
+        <Route path='/' element={<Entry />} />
+        <Route path='/dashboard' element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        } />
+        <Route path='/add-ticket' element={
+          <PrivateRoute>
+            <AddTicket />
+          </PrivateRoute>
+        } />
+        <Route path='/tickets' element={
+          <PrivateRoute>
+            <TicketLists />
+          </PrivateRoute>
+        } />
+        <Route path='/tickets/:id' element={
+          <PrivateRoute>
+            <ViewTicket />
+          </PrivateRoute>
+        } />
       </Routes>
     </DefaultLayout>
-  )
+  );
 }
