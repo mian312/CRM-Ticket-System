@@ -72,3 +72,44 @@ export const userLogout = async () => {
         console.log(error);
     }
 };
+
+//* Calling new access JWT API
+export const fetchNewAccessJWT = () => {
+    // Creating promise to call the request
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Getting the refreshJWT token from local storage
+            const { refreshJWT } = JSON.parse(
+                localStorage.getItem("crmSite") || ''
+            );
+
+            // Checking if the token is present
+            if (!refreshJWT) {
+                reject("Token not found!");
+            }
+
+            // Calling the API
+            const res = await Axios.get('/api/tokens', {
+                headers: {
+                    Authorization: refreshJWT,
+                },
+            });
+
+            // Setting the JWT token in session storage
+            if (res.data.status === "success") {
+                sessionStorage.setItem("accessJWT", res.data.accessJWT);
+            }
+
+            // Returning the response
+            resolve(true);
+        } catch (error: any) {
+            // Handling specific error message
+            if (error.message === "Request failed with status code 403") {
+                localStorage.removeItem("crmSite");
+            }
+
+            // Handling the error
+            reject(false);
+        }
+    });
+};

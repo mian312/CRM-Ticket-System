@@ -4,14 +4,19 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../assets/img/logo.png";
 import { toast } from "react-toastify";
 import { userLogout } from "../../api/UserApi";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../Pages/Entry/loginSlice";
 
 export const Header: React.FC = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const logMeOut = () => {
     try {
       userLogout();
       sessionStorage.removeItem("accessJWT");
+      localStorage.removeItem("crmSite");
+      dispatch(logOut())
       toast.success("Logged out successfully")
       navigate('/')
     } catch (error) {
