@@ -8,7 +8,7 @@ interface TicketTableProps {
 }
 
 const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
-  console.log("tickets:", tickets)
+  // console.log("tickets:", tickets)
 
   return (
     <Table striped bordered hover>

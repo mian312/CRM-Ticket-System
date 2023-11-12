@@ -30,7 +30,7 @@ export default function App() {
             <TicketLists />
           </PrivateRoute>
         } />
-        <Route path='/tickets/:id' element={
+        <Route path='/tickets/:tId' element={
           <PrivateRoute>
             <ViewTicket />
           </PrivateRoute>

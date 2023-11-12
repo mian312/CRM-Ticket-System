@@ -1,39 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import tickets from "../../assets/data/dummy-tickets.json";
+// import tickets from "../../assets/data/dummy-tickets.json";
 import MessageHistory from "../../Components/Messages/message-history/MessageHistory";
 import { BreadCrumb } from "../../Components/BreadCrumbs/BreadCrumb";
 import UpdateTicket from "../../Components/Tickets/Update-Ticket/UpdateTicket";
 import { useParams } from "react-router-dom";
-import { Ticket } from "../../assets/interface/interface";
+// import { Ticket } from "../../assets/interface/interface";
 import { toast } from "react-toastify";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../Components/Shared/Loading";
 import Error from "../../Components/Shared/Error";
+import { fetchSingleTicket } from "./singleTicketAction";
 
 const ViewTicket: React.FC = () => {
-    const { tId } = useParams<{ tId: string }>(); // Specify the type for tId
-
-    const [message, setMessage] = useState<string>("");
-    const [ticket, setTicket] = useState<Ticket | undefined>(); // Initialize ticket as undefined
-    const { searchTicketList, isLoading, error } = useSelector(
-        (state: any) => state.tickets
-    );
+    const { tId } = useParams<{ tId: string }>();
+    const [message, setMessage] = useState<string>(""); const dispatch = useDispatch();
+    const { isLoading, error, selectedTicket } = useSelector(
+        (state: any) => state.singleTicket
+    )
 
 
     useEffect(() => {
-        const foundTickets = searchTicketList.filter((ticket: Ticket) =>
-            ticket._id === tId
-        );
-        console.log("Found Tickets:", foundTickets);
-
-        if (foundTickets.length > 0) {
-            setTicket(foundTickets[0]);  // Set ticket to the first found ticket
-        } else {
-            setTicket(undefined); // Set ticket to undefined if no matching tickets found
-            toast.error('Ticket not found');
-        }
-    }, [tId]);
+        dispatch(fetchSingleTicket(tId));
+    }, [message, tId, dispatch]);
 
 
     const handleOnChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -57,11 +46,11 @@ const ViewTicket: React.FC = () => {
             </Row>
             <Row>
                 <Col className="text-weight-bolder text-secondary">
-                    {ticket && (
+                    {selectedTicket && (
                         <>
-                            <div className="subject">Subject: {ticket.subject}</div>
-                            <div className="date">Ticket Opened: {ticket.openAt}</div>
-                            <div className="status">Status: {ticket.status}</div>
+                            <div className="subject">Subject: {selectedTicket.subject}</div>
+                            <div className="date">Ticket Opened: {selectedTicket.openAt}</div>
+                            <div className="status">Status: {selectedTicket.status}</div>
                         </>
                     )}
                 </Col>
@@ -71,7 +60,7 @@ const ViewTicket: React.FC = () => {
             </Row>
             <Row className="mt-4">
                 <Col>
-                    <MessageHistory msg={ticket?.conversations || []} />
+                    <MessageHistory msg={selectedTicket?.conversations || []} />
                 </Col>
             </Row>
             <hr />
