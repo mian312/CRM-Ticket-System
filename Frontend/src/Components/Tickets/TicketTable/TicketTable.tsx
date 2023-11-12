@@ -27,9 +27,9 @@ const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
               <td>{row._id}</td>
               <td>
                 <Link to={`/tickets/${row._id}`}>{row.subject}</Link>
-                </td>
+              </td>
               <td>{row.status}</td>
-              <td>{row.openAt}</td>
+              <td>{row.openAt && new Date(row.openAt).toLocaleString()}</td>
             </tr>
           ))
         ) : (

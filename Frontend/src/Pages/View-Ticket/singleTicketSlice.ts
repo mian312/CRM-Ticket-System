@@ -1,50 +1,59 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-// Define the initial state interface for singleTicketSlice
 interface SingleTicketState {
-    selectedTicket: any[];
+    selectedTicket: any; // Define the appropriate structure for a single ticket
     isLoading: boolean;
     error: string;
+    replyMsg: string; // Added for handling reply messages
 }
 
-// Initialize the initial state for singleTicketSlice
 const initialState: SingleTicketState = {
-    selectedTicket: [],
+    selectedTicket: null, // Adjust based on your ticket structure
     isLoading: false,
     error: "",
+    replyMsg: "", // Initial state for reply messages
 };
 
-// Create a singleTicketSlice using createSlice
 const singleTicketSlice = createSlice({
     name: "singleTicket",
     initialState,
     reducers: {
-        // Reducer for setting loading state
         fetchSingleTicketLoading: (state) => {
             state.isLoading = true;
         },
-        // Reducer for successful single ticket fetch
         fetchSingleTicketSuccess: (state, action: PayloadAction<any>) => {
             state.selectedTicket = action.payload;
             state.isLoading = false;
             state.error = "";
         },
-        // Reducer for failed single ticket fetch
         fetchSingleTicketFail: (state, action: PayloadAction<string>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        replyTicketLoading: (state) => {
+            state.isLoading = true;
+        },
+        replyTicketSuccess: (state, action: PayloadAction<string>) => {
+            state.isLoading = false;
+            state.error = "";
+            state.replyMsg = action.payload;
+        },
+        replyTicketFail: (state, action: PayloadAction<string>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
     },
 });
 
-// Extract reducer and actions
 const { reducer, actions } = singleTicketSlice;
 
-// Export individual actions
 export const {
     fetchSingleTicketLoading,
     fetchSingleTicketSuccess,
     fetchSingleTicketFail,
+    replyTicketLoading,
+    replyTicketSuccess,
+    replyTicketFail,
 } = actions;
 
 export default reducer;

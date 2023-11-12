@@ -43,3 +43,21 @@ export const getSingleTicket = (_id: string) => {
         }
     });
 };
+
+
+export const updateReplyTicket = (_id: string, msgObj: object) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await Axios.put(`/api/ticket/${_id}`, msgObj, {
+                headers: {
+                    Authorization: accessJWT,
+                },
+            });
+
+            resolve(result.data);
+        } catch (error: any) {
+            console.log(error.message);
+            reject(error);
+        }
+    });
+};
