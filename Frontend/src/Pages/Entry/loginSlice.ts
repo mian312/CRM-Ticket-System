@@ -8,9 +8,10 @@ interface LoginState {
 
 const initialState: LoginState = {
     isLoading: false,
-    isAuth: false,
+    isAuth: !!sessionStorage.getItem('accessJWT'), // Using !! to convert truthy/falsy to true/false directly
     error: "",
 };
+
 
 const loginSlice = createSlice({
     name: "login",
