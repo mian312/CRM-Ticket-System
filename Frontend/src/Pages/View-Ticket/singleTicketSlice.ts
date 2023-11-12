@@ -42,6 +42,18 @@ const singleTicketSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
+        closeTicketLoading: (state) => {
+            state.isLoading = true;
+        },
+        closeTicketSuccess: (state, action: PayloadAction<string>) => {
+            state.isLoading = false;
+            state.error = "";
+            state.replyMsg = action.payload;
+        },
+        closeTicketFail: (state, action: PayloadAction<string>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
     },
 });
 
@@ -54,6 +66,9 @@ export const {
     replyTicketLoading,
     replyTicketSuccess,
     replyTicketFail,
+    closeTicketLoading,
+    closeTicketSuccess,
+    closeTicketFail,
 } = actions;
 
 export default reducer;

@@ -5,9 +5,12 @@ import {
     replyTicketLoading,
     replyTicketFail,
     replyTicketSuccess,
+    closeTicketLoading,
+    closeTicketFail,
+    closeTicketSuccess,
 } from "./singleTicketSlice"; // Assuming you've appropriately named your singleTicketSlice file
 
-import { getSingleTicket, updateReplyTicket } from "../../api/TicketApi"; // Assuming an API for single ticket exists
+import { getSingleTicket, updateReplyTicket, updateTicketStatusClosed } from "../../api/TicketApi"; // Assuming an API for single ticket exists
 import { Dispatch } from "redux";
 
 export const fetchSingleTicket = (_id: string) => async (dispatch: Dispatch) => {
@@ -39,5 +42,21 @@ export const replyOnTicket = (_id: string, msgObj: object) => async (dispatch: D
     } catch (error: any) {
         console.log(error.message);
         dispatch(replyTicketFail(error.message));
+    }
+};
+
+export const closeTicket = (_id: string) => async (dispatch: Dispatch) => {
+    dispatch(closeTicketLoading());
+    try {
+        const result: any = await updateTicketStatusClosed(_id);
+        if (result.status === "error") {
+            return dispatch(closeTicketFail(result.message));
+        }
+
+        dispatch(fetchSingleTicket(_id));
+
+        dispatch(closeTicketSuccess("Status Updated successfully"));
+    } catch (error: any) {
+        dispatch(closeTicketFail(error.message));
     }
 };

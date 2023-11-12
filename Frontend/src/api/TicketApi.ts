@@ -44,19 +44,49 @@ export const getSingleTicket = (_id: string) => {
     });
 };
 
-
+//* Calling API to reply ticket
 export const updateReplyTicket = (_id: string, msgObj: object) => {
+    // Creating promise to reply ticket
     return new Promise(async (resolve, reject) => {
         try {
+            // Saving API response to reply ticket
             const result = await Axios.put(`/api/ticket/${_id}`, msgObj, {
                 headers: {
                     Authorization: accessJWT,
                 },
             });
 
+            // Returning result
             resolve(result.data);
         } catch (error: any) {
-            console.log(error.message);
+            // Handling error
+            reject(error);
+        }
+    });
+};
+
+//* Calling API to close ticket
+export const updateTicketStatusClosed = (_id: string) => {
+    // Creating promise to close ticket
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Saving API response to close ticket
+            const result = await Axios.patch(
+                `/api/ticket/close-ticket/${_id}`,
+                {
+                    // Giving empty body
+                },
+                {
+                    headers: {
+                        Authorization: accessJWT,
+                    },
+                }
+            );
+
+            // Returning result
+            resolve(result.data);
+        } catch (error: any) {
+            // Handling error
             reject(error);
         }
     });
