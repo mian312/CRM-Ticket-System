@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import { BreadCrumb } from "../../Components/BreadCrumbs/BreadCrumb";
 import TicketTable from "../../Components/Tickets/TicketTable/TicketTable";
-import tickets from "../../assets/data/dummy-tickets.json";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllTickets } from "../Ticket-Listing/ticketsAction";
+import { Ticket } from "../../assets/interface/interface";
 
 export const Dashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -13,6 +15,17 @@ export const Dashboard: React.FC = () => {
         e.preventDefault();
         navigate('/add-ticket')
     }
+    const dispatch = useDispatch();
+    const { tickets } = useSelector((state: any) => state.tickets);
+
+    useEffect(() => {
+        if (!tickets.length) {
+            dispatch(fetchAllTickets());
+        }
+    }, [tickets, dispatch]);
+
+    const pendingTickets = tickets.filter((row: Ticket) => row.status !== "Closed");
+    const totlatTickets = tickets.length;
 
     return (
         <Container>
@@ -35,8 +48,8 @@ export const Dashboard: React.FC = () => {
             </Row>
             <Row>
                 <Col className="text-center  mb-2">
-                    <div>Total tickets: 50</div>
-                    <div>Pending tickets: 5</div>
+                    <div>Total tickets: {totlatTickets}</div>
+                    <div>Pending tickets: {pendingTickets.length}</div>
                 </Col>
             </Row>
             <Row>
