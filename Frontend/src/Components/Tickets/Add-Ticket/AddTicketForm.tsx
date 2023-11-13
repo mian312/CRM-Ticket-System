@@ -11,7 +11,7 @@ interface FormDataError {
 interface FormData {
   subject: string;
   issueDate: string;
-  detail: string;
+  message: string;
 }
 
 interface AddTicketFormProps {
@@ -70,9 +70,9 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({
           <Form.Label>Password</Form.Label>
           <Form.Control
             as="textarea"
-            name="detail"
+            name="message"
             rows={5}
-            value={frmDt.detail}
+            value={frmDt.message}
             onChange={handleOnChange}
             required
           />

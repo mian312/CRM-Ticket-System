@@ -65,6 +65,27 @@ export const updateReplyTicket = (_id: string, msgObj: object) => {
     });
 };
 
+//* Calling API to create new ticket
+export const createNewTicket = (frmData: object) => {
+    // Creating promise to create new ticket
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Saving API response to create a new ticket
+            const result = await Axios.post('/api/ticket', frmData, {
+                headers: {
+                    Authorization: accessJWT,
+                },
+            });
+
+            // Returning result
+            resolve(result.data);
+        } catch (error: any) {
+            // Handling error
+            reject(error);
+        }
+    });
+};
+
 //* Calling API to close ticket
 export const updateTicketStatusClosed = (_id: string) => {
     // Creating promise to close ticket
