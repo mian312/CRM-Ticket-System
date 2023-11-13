@@ -19,6 +19,9 @@ const newPassword = Joi.string().alphanum().min(3).max(30).required();
 const shortStr = Joi.string().min(2).max(50);
 const longStr = Joi.string().min(2).max(1000);
 
+// Define Joi schemas for date validation
+const dt = Joi.date();
+
 //* Validation middleware for reset password request
 const resetPassReqValidation = (req, res, next) => {
     // Create a Joi schema for email or phone validation
@@ -60,6 +63,7 @@ const createNewTicketValidation = (req, res, next) => {
         subject: shortStr.required(),
         sender: shortStr.required(),
         message: longStr.required(),
+        issueDate: dt.required(),
     });
 
     // Validate the request body using the schema
