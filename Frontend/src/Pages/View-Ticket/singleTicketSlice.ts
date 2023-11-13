@@ -3,6 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface SingleTicketState {
     selectedTicket: any; // Define the appropriate structure for a single ticket
     isLoading: boolean;
+    replyTicketError: string;
     error: string;
     replyMsg: string; // Added for handling reply messages
 }
@@ -10,6 +11,7 @@ interface SingleTicketState {
 const initialState: SingleTicketState = {
     selectedTicket: null, // Adjust based on your ticket structure
     isLoading: false,
+    replyTicketError: "",
     error: "",
     replyMsg: "", // Initial state for reply messages
 };
@@ -40,7 +42,7 @@ const singleTicketSlice = createSlice({
         },
         replyTicketFail: (state, action: PayloadAction<string>) => {
             state.isLoading = false;
-            state.error = action.payload;
+            state.replyTicketError = action.payload;
         },
         closeTicketLoading: (state) => {
             state.isLoading = true;

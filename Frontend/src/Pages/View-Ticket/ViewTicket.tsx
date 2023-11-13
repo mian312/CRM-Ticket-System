@@ -14,7 +14,7 @@ const ViewTicket: React.FC = () => {
     const { tId } = useParams<{ tId: string }>();
     const [message, setMessage] = useState<string>("");
     const dispatch = useDispatch();
-    const { isLoading, error, selectedTicket, replyMsg } = useSelector(
+    const { isLoading, error, selectedTicket, replyMsg, replyTicketError } = useSelector(
         (state: any) => state.singleTicket
     );
     const {
@@ -41,10 +41,14 @@ const ViewTicket: React.FC = () => {
             sender: name,
         };
 
-        dispatch(replyOnTicket(tId, msgObj));
-        setMessage("");
+        try {
+            dispatch(replyOnTicket(tId, msgObj));
+            setMessage("");
 
-        toast.success(replyMsg); // Corrected the typo in "submitted"
+            toast.success(replyMsg);
+        } catch (error) {
+            toast.error(replyTicketError);
+        }
     };
 
     if (isLoading) return <Loading />;
