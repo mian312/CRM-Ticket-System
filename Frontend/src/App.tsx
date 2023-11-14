@@ -9,12 +9,14 @@ import { AddTicket } from './Pages/New-Ticket/AddTicket';
 import TicketLists from './Pages/Ticket-Listing/TicketLists';
 import ViewTicket from './Pages/View-Ticket/ViewTicket';
 import PrivateRoute from './Layouts/PrivateRoute';
+import { Registration } from './Pages/Regestration/Registration.pg';
 
 export default function App() {
   return (
     <DefaultLayout>
       <Routes>
         <Route path='/' element={<Entry />} />
+        <Route path='/registration' element={<Registration />} />
         <Route path='/dashboard' element={
           <PrivateRoute>
             <Dashboard />

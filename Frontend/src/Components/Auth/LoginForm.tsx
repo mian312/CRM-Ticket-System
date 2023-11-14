@@ -19,7 +19,7 @@ const LoginForm: React.FC<LoginProps> = ({
     pass,
 }) => {
     const [isEmailInput, setIsEmailInput] = useState(true);
-    const { isLoading, isAuth, error } = useSelector((state: any) => state.login);
+    const { isLoading } = useSelector((state: any) => state.login);
 
     const toggleInputType = () => {
         setIsEmailInput(!isEmailInput);
@@ -96,6 +96,12 @@ const LoginForm: React.FC<LoginProps> = ({
                     <Link to="#" onClick={() => formSwitcher("rest")}>
                         Forget Password?
                     </Link>
+                </Col>
+            </Row>
+
+            <Row className="py-4 justify-content-center">
+                <Col xs="auto">
+                    Are you new here? <Link to="/registration">Register Now</Link>
                 </Col>
             </Row>
         </Container>
