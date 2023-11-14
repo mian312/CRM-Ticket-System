@@ -1,6 +1,28 @@
 import Axios from "./Axios";
 
 
+//* Calling API for user registration
+export const userRegistration = (frmData: object) => {
+    // Creating promise to call the request
+    return new Promise(async (resolve, reject) => {
+      try {
+        // Calling the API
+        const res = await Axios.post('/api/user/signup', frmData);
+  
+        // Returning the response
+        resolve(res.data);
+  
+        // Setting the JWT token in session storage
+        if (res.data.status === "success") {
+          resolve(res.data);
+        }
+      } catch (error) {
+        // Handling the error
+        reject(error);
+      }
+    });
+  };
+
 //* Calling user login API
 export const userLogin = (frmData: any) => {
     // Creating promise to call the request

@@ -18,7 +18,6 @@ interface RegistrationFormProps {
         name: string;
         phone: string;
         email: string;
-        company: string;
         address: string;
         password: string;
         confirmPass: string;
@@ -146,6 +145,7 @@ const RegistrationForm: React.FC<RegistrationFormProps> = ({
                         <Button
                             variant="primary"
                             type="submit"
+                            disabled={Object.values(passwordError).includes(false)}
                         >
                             Submit
                         </Button>
