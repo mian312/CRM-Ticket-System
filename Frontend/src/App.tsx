@@ -10,6 +10,7 @@ import TicketLists from './Pages/Ticket-Listing/TicketLists';
 import ViewTicket from './Pages/View-Ticket/ViewTicket';
 import PrivateRoute from './Layouts/PrivateRoute';
 import { Registration } from './Pages/Regestration/Registration.pg';
+import UpdatePass from './Pages/Update-Password/UpdatePass';
 
 export default function App() {
   return (
@@ -17,6 +18,7 @@ export default function App() {
       <Routes>
         <Route path='/' element={<Entry />} />
         <Route path='/registration' element={<Registration />} />
+        <Route path='/password-reset' element={<UpdatePass />} />
         <Route path='/dashboard' element={
           <PrivateRoute>
             <Dashboard />

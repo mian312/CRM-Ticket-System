@@ -5,23 +5,23 @@ import Axios from "./Axios";
 export const userRegistration = (frmData: object) => {
     // Creating promise to call the request
     return new Promise(async (resolve, reject) => {
-      try {
-        // Calling the API
-        const res = await Axios.post('/api/user/signup', frmData);
-  
-        // Returning the response
-        resolve(res.data);
-  
-        // Setting the JWT token in session storage
-        if (res.data.status === "success") {
-          resolve(res.data);
+        try {
+            // Calling the API
+            const res = await Axios.post('/api/user/signup', frmData);
+
+            // Returning the response
+            resolve(res.data);
+
+            // Setting the JWT token in session storage
+            if (res.data.status === "success") {
+                resolve(res.data);
+            }
+        } catch (error) {
+            // Handling the error
+            reject(error);
         }
-      } catch (error) {
-        // Handling the error
-        reject(error);
-      }
     });
-  };
+};
 
 //* Calling user login API
 export const userLogin = (frmData: any) => {
@@ -132,6 +132,40 @@ export const fetchNewAccessJWT = () => {
 
             // Handling the error
             reject(false);
+        }
+    });
+};
+
+//* Calling password reset API
+export const reqPasswordOtp = (input: string) => {
+    // Creating promise to call the API
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Calling the API
+            const { data } = await Axios.post('/api/user/reset-password', { input });
+
+            // Returning the data
+            resolve(data);
+        } catch (error) {
+            // Handling the error
+            reject(error);
+        }
+    });
+};
+
+//* Calling password update API
+export const updateUserPassword = (passObj: object) => {
+    // Creating promise to call the API
+    return new Promise(async (resolve, reject) => {
+        try {
+            // Calling the API
+            const { data } = await Axios.patch('/api/user/reset-password', passObj);
+
+            // Returning the data
+            resolve(data);
+        } catch (error) {
+            // Handling the error
+            reject(error);
         }
     });
 };

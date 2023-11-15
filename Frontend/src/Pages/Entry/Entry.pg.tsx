@@ -1,22 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import './Entry.style.css';
 import LoginForm from "../../Components/Auth/LoginForm";
 import ResetPassword from "../../Components/Auth/ResetPassword";
 import { useNavigate } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginFail, loginPending, loginSuccess } from "./loginSlice";
 import { userLogin } from "../../api/UserApi";
 import { getUserProfile } from "../Dashboard/userAction";
+import { sendPasswordResetOtp } from "../Update-Password/passwordAction";
 
 const Entry: React.FC = () => {
-    const navigate = useNavigate();
     const [input, setInput] = useState("");
     const [password, setPassword] = useState("");
     const [frmLoad, setFrmLoad] = useState("login");
+    const navigate = useNavigate();
     const dispatch = useDispatch();
+    const { isAuth } = useSelector((state: any) => state.login);
 
+    useEffect(() => {
+        sessionStorage.getItem('accessJWT') && navigate('/dashboard')
+    }, [navigate, isAuth])
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -63,7 +68,8 @@ const Entry: React.FC = () => {
     const handleOnResetSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        // TODO call api to submit the form
+		dispatch(sendPasswordResetOtp(input));
+        navigate('/password-reset')
         console.log("Input : ", input);
     };
 
