@@ -13,7 +13,7 @@ const emailOrPhone = Joi.alternatives().try(
 const pin = Joi.number().min(100000).max(999999).required();
 
 // Define a Joi schema for new password validation
-const newPassword = Joi.string().alphanum().min(3).max(30).required();
+const newPassword = Joi.string().min(3).max(30).required();
 
 // Define Joi schemas for string validation
 const shortStr = Joi.string().min(2).max(50);
