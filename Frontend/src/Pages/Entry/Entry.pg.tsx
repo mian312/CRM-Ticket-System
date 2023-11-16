@@ -10,6 +10,7 @@ import { loginFail, loginPending, loginSuccess } from "./loginSlice";
 import { userLogin } from "../../api/UserApi";
 import { getUserProfile } from "../Dashboard/userAction";
 import { sendPasswordResetOtp } from "../Update-Password/passwordAction";
+import { fetchAllTickets } from "../Ticket-Listing/ticketsAction";
 
 const Entry: React.FC = () => {
     const [input, setInput] = useState("");
@@ -59,6 +60,7 @@ const Entry: React.FC = () => {
             dispatch(loginSuccess());
             dispatch(getUserProfile());
             toast.success("Login Successful!");
+            dispatch(fetchAllTickets());
             navigate("/dashboard");
         } catch (error: any) {
             dispatch(loginFail(error.message));
@@ -68,7 +70,7 @@ const Entry: React.FC = () => {
     const handleOnResetSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-		dispatch(sendPasswordResetOtp(input));
+        dispatch(sendPasswordResetOtp(input));
         navigate('/password-reset')
         console.log("Input : ", input);
     };

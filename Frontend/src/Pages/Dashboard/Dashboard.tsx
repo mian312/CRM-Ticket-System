@@ -19,10 +19,8 @@ export const Dashboard: React.FC = () => {
     const { tickets } = useSelector((state: any) => state.tickets);
 
     useEffect(() => {
-        if (!tickets.length) {
-            dispatch(fetchAllTickets());
-        }
-    }, [tickets, dispatch]);
+        dispatch(fetchAllTickets());
+    }, []);
 
     const pendingTickets = tickets.filter((row: Ticket) => row.status !== "Closed");
     const totlatTickets = tickets.length;

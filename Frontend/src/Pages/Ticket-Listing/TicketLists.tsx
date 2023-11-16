@@ -16,7 +16,6 @@ const TicketLists: React.FC = () => {
     const navigate: NavigateFunction = useNavigate();
     const [str, setStr] = useState<string>("");
     const dispatch = useDispatch();
-    // const [dispTicket, setDispTicket] = useState<Ticket[]>(tickets);
 
     const { searchTicketList, isLoading, error } = useSelector(
         (state: any) => state.tickets
@@ -29,14 +28,6 @@ const TicketLists: React.FC = () => {
         //! Argument type '(disptch: Dispatch) => void' is not assignable to parameter type 'AnyAction'
         dispatch(filterSearchTicket(value));
     };
-
-    // const searchTicket = (sttr: string) => {
-    //     const displayTickets = tickets.filter((row) =>
-    //         row.subject?.toLowerCase().includes(sttr.toLowerCase())
-    //     );
-
-    //     setDispTicket(displayTickets);
-    // };
 
     useEffect(() => {
         //! Argument type '(disptch: Dispatch) => Promise<void>' is not assignable to parameter type 'AnyAction'
@@ -55,9 +46,7 @@ const TicketLists: React.FC = () => {
                 </Col>
             </Row>
             <Row className="mt-4">
-                <Col>
-                    <Button variant="info" onClick={() => navigate('/add-ticket')}>Add New Ticket</Button>
-                </Col>
+                <Col></Col>
                 <Col className="text-right">
                     <SearchForm handleOnChange={handleOnChange} str={str} />
                 </Col>

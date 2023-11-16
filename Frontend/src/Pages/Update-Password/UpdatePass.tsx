@@ -1,9 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import UpdatePassword from '../../Components/Auth/UpdatePassword';
-import ResetPassword from '../../Components/Auth/ResetPassword';
-import './UpdatePass.style.css';
 import { updatePassword } from './passwordAction';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import Loading from '../../Components/Shared/Loading';
+import './UpdatePass.style.css';
 
 
 interface PasswordError {
@@ -21,35 +23,22 @@ const initialState = {
     confirmPass: "",
 };
 
+const passVerificationError = {
+    isLenthy: false,
+    hasUpper: false,
+    hasLower: false,
+    hasNumber: false,
+    hasSpclChr: false,
+    confirmPass: false,
+}
+
 const UpdatePass: React.FC = () => {
     const dispatch = useDispatch();
-
-    // const [input, setInput] = useState("");
+    const navigate = useNavigate();
     const [newPassword, setNewPassword] = useState(initialState);
-    const [passwordError, setPasswordError] = useState<PasswordError>({
-        isLenthy: false,
-        hasUpper: false,
-        hasLower: false,
-        hasNumber: false,
-        hasSpclChr: false,
-        confirmPass: false,
-    });
-    const { showUpdatePassForm } = useSelector((state: any) => state.password);
-    const { input } = useSelector((state: any) => state.password);
-
-    const handleOnResetSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        // dispatch(sendPasswordResetOtp(email));
-    };
-
-    const handleOnResetChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { value } = e.target;
-        setInput(value);
-    };
-
-    const formSwitcher = () => { }
-
+    const [passwordError, setPasswordError] = useState<PasswordError>(passVerificationError);
+    useSelector((state: any) => state.password);
+    const { isLoading, status, message, input } = useSelector((state: any) => state.password);
 
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = e.target;
@@ -92,24 +81,20 @@ const UpdatePass: React.FC = () => {
             newPassword: password,
         };
         dispatch(updatePassword(newPassObj));
+
+        if (status === "success") {
+            toast.success("Password has been succesfully updated");
+            navigate('/')
+        } else if (status === "error") {
+            toast.error(message);
+        }
     };
 
+    if (isLoading) return <Loading />
+
     return (
-        <div className="entry-page bg-info">
+        <div className="entry-page">
             <div className="jumbotron form-box">
-                {/* {showUpdatePassForm
-                    ? <UpdatePassword
-                        handleOnChange={handleOnChange}
-                        handleOnSubmit={handleOnSubmit}
-                        newPassword={newPassword}
-                        passwordError={passwordError}
-                    />
-                    : <ResetPassword
-                        handleOnChange={handleOnResetChange}
-                        handleOnResetSubmit={handleOnResetSubmit}
-                        formSwitcher={formSwitcher}
-                        input={input}
-                    />} */}
                 <UpdatePassword
                     handleOnChange={handleOnChange}
                     handleOnSubmit={handleOnSubmit}
@@ -117,7 +102,7 @@ const UpdatePass: React.FC = () => {
                     passwordError={passwordError}
                 />
                 <div className="text-center">
-                    <a href="/">Login Now</a>
+                    <Link to='/'>Login Now</Link>
                 </div>
             </div>
         </div>

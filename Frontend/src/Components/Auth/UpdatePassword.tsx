@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-
-import { Container, Row, Col, Form, Button, Spinner, Alert } from "react-bootstrap";
+import React from "react";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
 
 interface UpdatePasswordProps {
     newPassword: {
@@ -22,11 +20,12 @@ interface UpdatePasswordProps {
 }
 
 
-const UpdatePassword: React.FC<UpdatePasswordProps> = ({ newPassword, passwordError, handleOnChange, handleOnSubmit }) => {
-
-    const { isLoading, status, message, input } = useSelector((state: any) => state.password);
-
-
+const UpdatePassword: React.FC<UpdatePasswordProps> = ({
+    newPassword,
+    passwordError,
+    handleOnChange,
+    handleOnSubmit
+}) => {
     return (
         <Container>
             <Row>
@@ -36,14 +35,10 @@ const UpdatePassword: React.FC<UpdatePasswordProps> = ({ newPassword, passwordEr
             </Row>
             <hr />
             <Row>
-                <Col>
-                    {message && (
-                        <Alert variant={status === "success" ? "success" : "danger"}>{message}</Alert>
-                    )}
-                    {isLoading && <Spinner variant="primary" animation="border" />}
+                <Col style={{backgroundColor: "limegreen"}}>
+                    <h5 className="bg-gradient">The OTP has been sent to your given contact input</h5>
                 </Col>
             </Row>
-
             <Row>
                 <Col>
                     <Form onSubmit={handleOnSubmit}>

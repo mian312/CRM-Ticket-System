@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { openNewTicket } from "./addTicketAction";
 import Error from "../../Components/Shared/Error";
 import Loading from "../../Components/Shared/Loading";
+import { useNavigate } from "react-router-dom";
+import { fetchAllTickets } from "../Ticket-Listing/ticketsAction";
 
 const initialFrmDt = {
     subject: "",
@@ -24,6 +26,7 @@ export const AddTicket = () => {
     const [frmData, setFrmData] = useState(initialFrmDt);
     const [frmDataErro, setFrmDataErro] = useState(initialFrmError);
 
+    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const {
@@ -59,7 +62,9 @@ export const AddTicket = () => {
         try {
             dispatch(openNewTicket({ ...frmData, sender: name }));
             setFrmData(initialFrmDt);
-            toast.success(successMsg)
+            // dispatch(fetchAllTickets());
+            toast.success(successMsg);
+            navigate("/dashboard");
         } catch (error: any) {
             toast.error(error)
         }

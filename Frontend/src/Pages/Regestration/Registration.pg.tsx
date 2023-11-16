@@ -3,7 +3,6 @@ import RegistrationForm from "../../Components/Auth/RegistrationForm";
 import './Registration.style.css';
 import { toast } from "react-toastify";
 import { useDispatch, useSelector } from "react-redux";
-import { Alert } from "react-bootstrap";
 import { newUserRegistration } from "./userRegestrationAction";
 import { useNavigate } from "react-router-dom";
 
@@ -31,7 +30,7 @@ export const Registration: React.FC = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const { isLoading, status, message } = useSelector(
+    const { status } = useSelector(
         (state: any) => state.registration
     );
 
