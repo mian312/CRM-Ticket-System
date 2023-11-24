@@ -1,15 +1,17 @@
-import React from "react";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import React, { useState } from "react";
+import { Form, Row, Col, Button, ListGroup } from "react-bootstrap";
 
 import "./add-ticket-form.style.css";
 
 interface FormDataError {
-  subject: boolean;
+  fromStation: boolean;
+  toStation: boolean;
   // Add more fields if needed
 }
 
 interface FormData {
-  subject: string;
+  fromStation: string;
+  toStation: string;
   issueDate: string;
   message: string;
 }
@@ -19,6 +21,11 @@ interface AddTicketFormProps {
   handleOnChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
   frmDataErro: FormDataError;
   frmDt: FormData;
+  options: [{
+    id: number;
+    stationCode: string;
+    stationName: string;
+  }];
 }
 
 const AddTicketForm: React.FC<AddTicketFormProps> = ({
@@ -26,8 +33,32 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({
   handleOnChange,
   frmDataErro,
   frmDt,
+  options,
 }) => {
-  console.log(frmDt);
+  const [fromStationFocused, setFromStationFocused] = useState(false);
+  const [toStationFocused, setToStationFocused] = useState(false);
+
+  const handleFromStationItemClick = (index: number) => {
+    const selectedOption = options[index];
+    handleOnChange({
+      target: {
+        name: "fromStation",
+        value: selectedOption.stationCode,
+      },
+    } as React.ChangeEvent<HTMLInputElement>);
+  };
+
+  const handleToStationItemClick = (index: number) => {
+    const selectedOption = options[index];
+    handleOnChange({
+      target: {
+        name: "toStation",
+        value: selectedOption.stationCode,
+      },
+    } as React.ChangeEvent<HTMLInputElement>);
+  };
+
+  // console.log(frmDt);
   return (
     <div className="mt-3 add-new-ticket bg-light jumbotron mb-3">
       <h1 className="text-info text-center">Add New Ticket</h1>
@@ -35,20 +66,68 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({
       <Form autoComplete="off" onSubmit={handleOnSubmit}>
         <Form.Group as={Row} className='my-2'>
           <Form.Label column sm={3}>
-            Subject
+            Starting Station
           </Form.Label>
           <Col sm={9}>
             <Form.Control
-              name="subject"
-              value={frmDt.subject}
+              name="fromStation"
+              value={frmDt.fromStation}
               minLength={3}
               maxLength={100}
               onChange={handleOnChange}
-              placeholder="Subject"
+              onFocus={() => setFromStationFocused(true)}
+              onBlur={() => setFromStationFocused(false)}
+              placeholder="fromStation"
               required
             />
+            {fromStationFocused && Array.isArray(options) &&
+              <ListGroup>
+                {options?.map((element, index) => (
+                  <ListGroup.Item
+                    key={index}
+                    onMouseDown={() => handleFromStationItemClick(index)}
+                  >
+                    {element.stationName} - {element.stationCode}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            }
             <Form.Text className="text-danger">
-              {frmDataErro.subject && "Subject is required!"}
+              {frmDataErro.fromStation && "Starting station is required!"}
+            </Form.Text>
+          </Col>
+        </Form.Group>
+        <Form.Group as={Row} className='my-2'>
+          <Form.Label column sm={3}>
+            Destination Station
+          </Form.Label>
+          <Col sm={9}>
+            <Form.Control
+              name="toStation"
+              value={frmDt.toStation}
+              minLength={3}
+              maxLength={100}
+              onChange={handleOnChange}
+              onFocus={() => setToStationFocused(true)}
+              onBlur={() => setToStationFocused(false)}
+              placeholder="toStation"
+              required
+            />
+            {toStationFocused && Array.isArray(options) && (
+              <ListGroup>
+                {options?.map((element, index) => (
+                  <ListGroup.Item
+                    key={index}
+                    onMouseDown={() => handleToStationItemClick(index)}
+                  >
+                    {element.stationName} - {element.stationCode}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            )}
+
+            <Form.Text className="text-danger">
+              {frmDataErro.toStation && "Destination station is required!"}
             </Form.Text>
           </Col>
         </Form.Group>

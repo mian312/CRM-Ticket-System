@@ -6,19 +6,22 @@ import { BreadCrumb } from "../../Components/BreadCrumbs/BreadCrumb";
 import AddTicketForm from "../../Components/Tickets/Add-Ticket/AddTicketForm";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
-import { openNewTicket } from "./addTicketAction";
+import { getTrains, openNewTicket, searcStations } from "./addTicketAction";
 import Error from "../../Components/Shared/Error";
 import Loading from "../../Components/Shared/Loading";
 import { useNavigate } from "react-router-dom";
 import { fetchAllTickets } from "../Ticket-Listing/ticketsAction";
+import TrainTable from "../../Components/Trains/Train-Table/TrainTable";
 
 const initialFrmDt = {
-    subject: "",
+    fromStation: "",
+    toStation: "",
     issueDate: "",
     message: "",
 };
 const initialFrmError = {
-    subject: false,
+    fromStation: false,
+    toStation: false,
     issueDate: false,
     message: false,
 };
@@ -33,7 +36,7 @@ export const AddTicket = () => {
         user: { name },
     } = useSelector((state: any) => state.user);
 
-    const { isLoading, error, successMsg } = useSelector(
+    const { isLoading, error, successMsg, stations, trains } = useSelector(
         (state: any) => state.openTicket
     );
 
@@ -46,29 +49,39 @@ export const AddTicket = () => {
             ...frmData,
             [name]: value,
         });
+
+        if (name === 'fromStation' || name === 'toStation') {
+            dispatch(searcStations(value, 5));
+        }
     };
 
     const handleOnSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
 
         setFrmDataErro(initialFrmError);
-
-        const isSubjectValid = await shortText(frmData.subject);
-
-        setFrmDataErro({
-            ...initialFrmError,
-            subject: !isSubjectValid,
-        });
         try {
-            dispatch(openNewTicket({ ...frmData, sender: name }));
-            setFrmData(initialFrmDt);
-            // dispatch(fetchAllTickets());
-            toast.success(successMsg);
-            navigate("/dashboard");
+            dispatch(getTrains(frmData.fromStation, frmData.toStation, frmData.issueDate))
+
         } catch (error: any) {
             toast.error(error)
         }
     };
+
+    const BookTrain = async (trainName: string) => {
+        try {
+            dispatch(openNewTicket({
+                subject: trainName,
+                issueDate: frmData.issueDate,
+                sender: name,
+                message: frmData.message
+            }))
+
+            toast.success("Train is Booked")
+            navigate('/dashboard')
+        } catch (error: any) {
+            toast.error(error)
+        }
+    }
 
     if (isLoading) return <Loading />
     if (error) return <Error Error={error} />
@@ -89,6 +102,16 @@ export const AddTicket = () => {
                         handleOnSubmit={handleOnSubmit}
                         frmDt={frmData}
                         frmDataErro={frmDataErro}
+                        options={stations}
+                    />
+                </Col>
+            </Row>
+
+            <Row>
+                <Col>
+                    <TrainTable
+                        Trains={trains}
+                        onBookTrain={BookTrain}
                     />
                 </Col>
             </Row>
