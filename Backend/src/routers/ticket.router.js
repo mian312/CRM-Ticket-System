@@ -14,7 +14,7 @@ router.all("/", (req, res, next) => {
 router.post("/", createNewTicketValidation, userAuthorization, async (req, res) => {
   try {
     // Destructure subject, sender, and message from the request body
-    const { subject, sender, message } = req.body;
+    const { subject, sender, message, issueDate, trainNumber } = req.body;
 
     const userId = req.userId;
 
@@ -22,6 +22,9 @@ router.post("/", createNewTicketValidation, userAuthorization, async (req, res) 
     const ticketObj = {
       clientId: userId,
       subject,
+      openAt: new Date(),
+      issueDate,
+      trainNumber,
       conversations: [
         {
           sender,

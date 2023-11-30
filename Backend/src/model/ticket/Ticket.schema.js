@@ -17,11 +17,21 @@ const TicketsSchema = new Schema({
     required: true,
     default: Date.now(),
   },
+  issueDate: {
+    type: Date,
+    required: true,
+    default: Date.now(),
+  },
+  trainNumber: {
+    type: String,
+    required: true,
+    default: "000000"
+  },
   status: {
     type: String,
     maxlength: 30,
     required: true,
-    default: "Pending operator response",
+    default: "Open",
   },
 
   conversations: [

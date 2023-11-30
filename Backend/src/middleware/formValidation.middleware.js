@@ -16,7 +16,7 @@ const pin = Joi.number().min(100000).max(999999).required();
 const newPassword = Joi.string().min(3).max(30).required();
 
 // Define Joi schemas for string validation
-const shortStr = Joi.string().min(2).max(50);
+const shortStr = Joi.string().min(2).max(500);
 const longStr = Joi.string().min(2).max(1000);
 
 // Define Joi schemas for date validation
@@ -64,6 +64,7 @@ const createNewTicketValidation = (req, res, next) => {
         sender: shortStr.required(),
         message: longStr.required(),
         issueDate: dt.required(),
+        trainNumber: shortStr.required(),
     });
 
     // Validate the request body using the schema
