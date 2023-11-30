@@ -22,8 +22,8 @@ export const Dashboard: React.FC = () => {
         dispatch(fetchAllTickets());
     }, []);
 
-    const pendingTickets = tickets.filter((row: Ticket) => row.status !== "Closed");
-    const totlatTickets = tickets.length;
+    const pendingTickets = tickets?.filter((row: Ticket) => row.status !== "Closed");
+    const totlatTickets = tickets?.length;
 
     return (
         <Container>
@@ -47,7 +47,7 @@ export const Dashboard: React.FC = () => {
             <Row>
                 <Col className="text-center  mb-2">
                     <div>Total tickets: {totlatTickets}</div>
-                    <div>Pending tickets: {pendingTickets.length}</div>
+                    <div>Pending tickets: {pendingTickets?.length}</div>
                 </Col>
             </Row>
             <Row>

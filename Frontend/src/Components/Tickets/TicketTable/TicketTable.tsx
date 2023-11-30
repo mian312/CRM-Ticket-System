@@ -22,7 +22,7 @@ const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
         </tr>
       </thead>
       <tbody>
-        {tickets.length ? (
+        {tickets?.length ? (
           tickets.map((row) => (
             <tr key={row._id}>
               <td>{row.trainNumber}</td>
@@ -36,7 +36,7 @@ const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
           ))
         ) : (
           <tr>
-            <td colSpan={4} className="text-center">
+            <td colSpan={6} className="text-center">
               No tickets to show
             </td>
           </tr>

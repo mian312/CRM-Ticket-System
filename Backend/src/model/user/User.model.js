@@ -76,8 +76,7 @@ const getUserById = async (_id) => {
     return data;
   } catch (error) {
     // Handle any errors that occurred during the database query
-    console.error(error);
-    throw error; // Re-throw the error to be handled further up the call stack
+    console.error(error.message);
   }
 
 };

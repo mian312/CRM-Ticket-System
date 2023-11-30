@@ -72,10 +72,10 @@ export const AddTicket = () => {
     const BookTrain = async (trainName: string, trainNumber: string) => {
         try {
             dispatch(openNewTicket({
+                sender: name,
                 subject: trainName,
                 issueDate: frmData.issueDate,
                 trainNumber: trainNumber,
-                sender: name,
                 message: frmData.message
             }))
 
