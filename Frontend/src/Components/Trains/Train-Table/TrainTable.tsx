@@ -4,7 +4,7 @@ import { Button, Table } from 'react-bootstrap';
 
 interface TrainTableProps {
     Trains: any[];
-    onBookTrain: (trainName: string) => void;
+    onBookTrain: (trainName: string, trainNumber: string) => void;
 }
 
 const TrainTable: React.FC<TrainTableProps> = ({ Trains, onBookTrain }) => (
@@ -32,7 +32,7 @@ const TrainTable: React.FC<TrainTableProps> = ({ Trains, onBookTrain }) => (
                         <td>
                             <div className="text-center">
                                 <Button variant="primary"
-                                    onClick={() => onBookTrain(row.trainFullName)}
+                                    onClick={() => onBookTrain(row.trainFullName, row.trainNumber)}
                                 >
                                     Book Train
                                 </Button>

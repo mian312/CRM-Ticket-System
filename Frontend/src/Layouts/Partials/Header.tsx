@@ -25,7 +25,7 @@ export const Header: React.FC = () => {
   }
 
   return (
-    <Navbar collapseOnSelect bg="info" variant="dark" expand="md" className="h-100">
+    <Navbar collapseOnSelect bg="info" variant="dark" expand="md" className="h-auto">
       <Navbar.Brand className="ps-1">
         <img src={logo} alt="logo" className="img-fluid rounded-circle" width="40px" />
       </Navbar.Brand>

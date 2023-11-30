@@ -81,7 +81,7 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({
               required
             />
             {fromStationFocused && Array.isArray(options) &&
-              <ListGroup>
+              <ListGroup className="z-3 position-absolute">
                 {options?.map((element, index) => (
                   <ListGroup.Item
                     key={index}
@@ -114,7 +114,7 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({
               required
             />
             {toStationFocused && Array.isArray(options) && (
-              <ListGroup>
+              <ListGroup className="z-2 position-absolute">
                 {options?.map((element, index) => (
                   <ListGroup.Item
                     key={index}
@@ -146,7 +146,7 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({
           </Col>
         </Form.Group>
         <Form.Group>
-          <Form.Label>Password</Form.Label>
+          <Form.Label>Write a subject</Form.Label>
           <Form.Control
             as="textarea"
             name="message"

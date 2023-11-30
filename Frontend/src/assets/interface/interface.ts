@@ -9,5 +9,7 @@ export interface Ticket {
     subject: string;
     status: string;
     openAt: string;
+    trainNumber: string;
+    issueDate: string;
     conversations?: Message[];
 }

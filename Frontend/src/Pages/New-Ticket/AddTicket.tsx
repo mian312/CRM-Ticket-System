@@ -28,6 +28,7 @@ const initialFrmError = {
 export const AddTicket = () => {
     const [frmData, setFrmData] = useState(initialFrmDt);
     const [frmDataErro, setFrmDataErro] = useState(initialFrmError);
+    const [showTable, setShowTeble] = useState(false);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -61,17 +62,19 @@ export const AddTicket = () => {
         setFrmDataErro(initialFrmError);
         try {
             dispatch(getTrains(frmData.fromStation, frmData.toStation, frmData.issueDate))
+            setShowTeble(true)
 
         } catch (error: any) {
             toast.error(error)
         }
     };
 
-    const BookTrain = async (trainName: string) => {
+    const BookTrain = async (trainName: string, trainNumber: string) => {
         try {
             dispatch(openNewTicket({
                 subject: trainName,
                 issueDate: frmData.issueDate,
+                trainNumber: trainNumber,
                 sender: name,
                 message: frmData.message
             }))
@@ -84,7 +87,7 @@ export const AddTicket = () => {
     }
 
     if (isLoading) return <Loading />
-    if (error) return <Error Error={error} />
+    // if (error) return <Error Error={error} />
 
     return (
         <Container>
@@ -108,12 +111,14 @@ export const AddTicket = () => {
             </Row>
 
             <Row>
-                <Col>
-                    <TrainTable
-                        Trains={trains}
-                        onBookTrain={BookTrain}
-                    />
-                </Col>
+                {showTable &&
+                    <Col>
+                        <TrainTable
+                            Trains={trains}
+                            onBookTrain={BookTrain}
+                        />
+                    </Col>
+                }
             </Row>
         </Container>
     );

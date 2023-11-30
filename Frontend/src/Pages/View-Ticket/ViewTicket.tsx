@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loading from "../../Components/Shared/Loading";
 import Error from "../../Components/Shared/Error";
 import { closeTicket, fetchSingleTicket, replyOnTicket } from "./singleTicketAction";
+import { Helmet } from "react-helmet-async";
 
 const ViewTicket: React.FC = () => {
     const { tId } = useParams<{ tId: string }>();
@@ -56,6 +57,9 @@ const ViewTicket: React.FC = () => {
 
     return (
         <Container>
+            <Helmet>
+                {/* <title> {selectedTicket?.subject} - Ticket View Page - CRM Ticket System </title> */}
+            </Helmet>
             <Row>
                 <Col>
                     <BreadCrumb page="Tickets" />
@@ -65,11 +69,17 @@ const ViewTicket: React.FC = () => {
                 <Col className="text-weight-bolder text-secondary">
                     {selectedTicket && (
                         <>
-                            <div className="subject">Subject: {selectedTicket.subject}</div>
+                            <div className="subject">Train Number: {selectedTicket.trainNumber}</div>
+                            <div className="subject">Train Name: {selectedTicket.subject}</div>
                             <div className="date">
                                 Ticket Opened: {" "}
                                 {selectedTicket.openAt &&
                                     new Date(selectedTicket.openAt).toLocaleString()}
+                            </div>
+                            <div className="date">
+                                Target Date: {" "}
+                                {selectedTicket.issueDate &&
+                                    new Date(selectedTicket.issueDate).toLocaleString()}
                             </div>
                             <div className="status">Status: {selectedTicket.status}</div>
                         </>
@@ -101,6 +111,7 @@ const ViewTicket: React.FC = () => {
                         msg={message}
                         handleOnChange={handleOnChange}
                         handleOnSubmit={handleOnSubmit}
+                        status={selectedTicket?.status}
                     />
                 </Col>
             </Row>

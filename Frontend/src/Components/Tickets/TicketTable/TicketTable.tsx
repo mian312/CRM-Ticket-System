@@ -18,18 +18,20 @@ const TicketTable: React.FC<TicketTableProps> = ({ tickets }) => {
           <th>Subjects</th>
           <th>Status</th>
           <th>Opened Date</th>
+          <th>Target Date</th>
         </tr>
       </thead>
       <tbody>
         {tickets.length ? (
           tickets.map((row) => (
             <tr key={row._id}>
-              <td>{row._id}</td>
+              <td>{row.trainNumber}</td>
               <td>
                 <Link to={`/tickets/${row._id}`}>{row.subject}</Link>
               </td>
               <td>{row.status}</td>
               <td>{row.openAt && new Date(row.openAt).toLocaleString()}</td>
+              <td>{row.issueDate && new Date(row.issueDate).toLocaleString()}</td>
             </tr>
           ))
         ) : (

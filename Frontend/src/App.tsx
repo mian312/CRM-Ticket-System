@@ -11,35 +11,53 @@ import ViewTicket from './Pages/View-Ticket/ViewTicket';
 import PrivateRoute from './Layouts/PrivateRoute';
 import { Registration } from './Pages/Regestration/Registration.pg';
 import UpdatePass from './Pages/Update-Password/UpdatePass';
+import { ToastContainer } from 'react-toastify';
 
 export default function App() {
   return (
-    <DefaultLayout>
+    <>
+      <ToastContainer
+        position="top-center"
+        autoClose={2500}
+        newestOnTop={true}
+        closeOnClick
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <Routes>
         <Route path='/' element={<Entry />} />
         <Route path='/registration' element={<Registration />} />
         <Route path='/password-reset' element={<UpdatePass />} />
         <Route path='/dashboard' element={
-          <PrivateRoute>
-            <Dashboard />
-          </PrivateRoute>
+          <DefaultLayout>
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          </DefaultLayout>
         } />
         <Route path='/add-ticket' element={
-          <PrivateRoute>
-            <AddTicket />
-          </PrivateRoute>
+          <DefaultLayout>
+            <PrivateRoute>
+              <AddTicket />
+            </PrivateRoute>
+          </DefaultLayout>
         } />
         <Route path='/tickets' element={
-          <PrivateRoute>
-            <TicketLists />
-          </PrivateRoute>
+          <DefaultLayout>
+            <PrivateRoute>
+              <TicketLists />
+            </PrivateRoute>
+          </DefaultLayout>
         } />
         <Route path='/tickets/:tId' element={
-          <PrivateRoute>
-            <ViewTicket />
-          </PrivateRoute>
+          <DefaultLayout>
+            <PrivateRoute>
+              <ViewTicket />
+            </PrivateRoute>
+          </DefaultLayout>
         } />
       </Routes>
-    </DefaultLayout>
+    </>
   );
 }
