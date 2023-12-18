@@ -13,7 +13,7 @@ const Error: React.FC<ErrProps> = ({ Error }) => {
                 <Col>
                     <h1 className="text-danger">404 Error</h1>
                     <p className="text-danger">{Error}</p>
-                    <Link to="/" className='btn btn-danger'>Go Home</Link>
+                    <Link to="/dashboard" className='btn btn-danger'>Go Home</Link>
                 </Col>
             </Row>
         </Container>

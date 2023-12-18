@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllTickets } from "../Ticket-Listing/ticketsAction";
 import { Ticket } from "../../assets/interface/interface";
+import Loading from "../../Components/Shared/Loading";
 
 export const Dashboard: React.FC = () => {
     const navigate = useNavigate();
@@ -16,7 +17,7 @@ export const Dashboard: React.FC = () => {
         navigate('/add-ticket')
     }
     const dispatch = useDispatch();
-    const { tickets } = useSelector((state: any) => state.tickets);
+    const { isLoading, tickets } = useSelector((state: any) => state.tickets);
 
     useEffect(() => {
         dispatch(fetchAllTickets());
@@ -24,6 +25,8 @@ export const Dashboard: React.FC = () => {
 
     const pendingTickets = tickets?.filter((row: Ticket) => row.status !== "Closed");
     const totlatTickets = tickets?.length;
+
+    if (isLoading) return <Loading />;
 
     return (
         <Container>

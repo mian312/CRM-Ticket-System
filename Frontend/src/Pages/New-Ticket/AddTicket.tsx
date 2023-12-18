@@ -37,7 +37,7 @@ export const AddTicket = () => {
         user: { name },
     } = useSelector((state: any) => state.user);
 
-    const { isLoading, error, successMsg, stations, trains } = useSelector(
+    const { isLoading, trainsLoading, error, successMsg, stations, trains } = useSelector(
         (state: any) => state.openTicket
     );
 
@@ -62,10 +62,11 @@ export const AddTicket = () => {
         setFrmDataErro(initialFrmError);
         try {
             dispatch(getTrains(frmData.fromStation, frmData.toStation, frmData.issueDate))
-            setShowTeble(true)
+            setShowTeble(true);
 
         } catch (error: any) {
             toast.error(error)
+            setShowTeble(false);
         }
     };
 
@@ -111,12 +112,15 @@ export const AddTicket = () => {
             </Row>
 
             <Row>
-                {showTable &&
-                    <Col>
-                        <TrainTable
-                            Trains={trains}
-                            onBookTrain={BookTrain}
-                        />
+                {
+                    showTable && <Col>
+                        {trainsLoading
+                            ? <Loading />
+                            : <TrainTable
+                                Trains={trains}
+                                onBookTrain={BookTrain}
+                            />
+                        }
                     </Col>
                 }
             </Row>

@@ -68,6 +68,7 @@ const newTicketSlice = createSlice({
         },
         getTrainsFail: (state, action: PayloadAction<string>) => {
             state.trainsLoading = false;
+            state.trains = [];
             state.error = action.payload;
         }
     },

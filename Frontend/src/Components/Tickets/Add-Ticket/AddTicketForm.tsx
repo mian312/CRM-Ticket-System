@@ -38,6 +38,8 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({
   const [fromStationFocused, setFromStationFocused] = useState(false);
   const [toStationFocused, setToStationFocused] = useState(false);
 
+  const minDate = new Date()
+
   const handleFromStationItemClick = (index: number) => {
     const selectedOption = options[index];
     handleOnChange({
@@ -139,6 +141,7 @@ const AddTicketForm: React.FC<AddTicketFormProps> = ({
             <Form.Control
               type="date"
               name="issueDate"
+              min={minDate.toISOString().substring(0, 10)}
               value={frmDt.issueDate}
               onChange={handleOnChange}
               required

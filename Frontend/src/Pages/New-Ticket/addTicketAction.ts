@@ -35,10 +35,10 @@ export const searcStations = (query: string, limit: number) => async (dispatch: 
 
         const result: any = await fetchStations(query, limit);
 
-        if (result?.errors) {
-            dispatch(getStationFail(result.errors.title))
-        } else {
+        if (result.data) {
             dispatch(getStationSuccess(result.data))
+        } else {
+            dispatch(getStationFail(result.errors))
         }
     } catch (error: any) {
         dispatch(getStationFail(error.message))
@@ -53,7 +53,7 @@ export const getTrains = (sourceStation: string,
 
             const result: any = await fetchTrains(sourceStation, destinationStation, date);
 
-            if (result?.errors) {
+            if (result.errors) {
                 dispatch(getTrainsFail(result.errors.title))
             } else {
                 dispatch(getTrainsSuccess(result.data))
