@@ -60,11 +60,11 @@ app.use("/api/tokens", tokenRouter)
 //Error handler
 import handleError from "./src/utils/errorHandler.js";
 
-app.use((req, res, next) => {
-  const error = new Error("Resources not found!");
-  error.status = 404;
-  next(error);
-});
+// app.use((req, res, next) => {
+//   const error = new Error("Resources not found!");
+//   error.status = 404;
+//   next(error);
+// });
 
 app.use((error, req, res, next) => {
   handleError(error, res);
