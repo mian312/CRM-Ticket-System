@@ -1,6 +1,5 @@
-import { ResetSchema } from "./restPin.schema.js";
+import { ResetSchema } from "./RestPin.schema.js";
 import { randomPinNumber } from "../../utils/randomGenerator.js";
-import * as mongoose from 'mongoose';
 
 //* Function to set the password reset pin in the database
 const setPasswordResetPin = async (input) => {
