@@ -1,4 +1,7 @@
 import { createClient } from 'redis';
+import dotenv from 'dotenv';
+
+dotenv.config(); // Load environment variables from .env file
 
 // Create the Redis client using the provided URL from environment variables
 const client = createClient({
