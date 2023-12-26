@@ -26,6 +26,14 @@ Stay informed with real-time updates on booked journeys.
 
 The following site is uprunning 👉[here]👈 (https://crm-ticket-system.netlify.app/)
 
+# Test user
+
+There is a following test user in case of you want:
+```bash
+email: example@gmail.com
+phone: 123456789
+password: Abc@1234
+```
 
 # Project Setup
 
