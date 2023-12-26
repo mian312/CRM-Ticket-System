@@ -20,7 +20,7 @@ export const Dashboard: React.FC = () => {
     const { isLoading, tickets } = useSelector((state: any) => state.tickets);
 
     useEffect(() => {
-        dispatch(fetchAllTickets());
+        dispatch(fetchAllTickets() as any);
     }, []);
 
     const pendingTickets = tickets?.filter((row: Ticket) => row.status !== "Closed");

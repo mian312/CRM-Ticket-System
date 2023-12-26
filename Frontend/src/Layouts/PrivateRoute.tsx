@@ -24,7 +24,7 @@ const PrivateRoute: React.FC<PrivateRouteProps> = ({
             result && dispatch(loginSuccess());
         };
 
-        !user._id && dispatch(getUserProfile());
+        !user._id && dispatch(getUserProfile() as any);
 
         !sessionStorage.getItem("accessJWT") &&
             localStorage.getItem("crmSite") &&

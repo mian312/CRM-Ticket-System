@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import UpdatePassword from '../../Components/Auth/UpdatePassword';
 import { updatePassword } from './passwordAction';
@@ -80,7 +80,7 @@ const UpdatePass: React.FC = () => {
             pin,
             newPassword: password,
         };
-        dispatch(updatePassword(newPassObj));
+        dispatch(updatePassword(newPassObj) as any);
 
         if (status === "success") {
             toast.success("Password has been succesfully updated");

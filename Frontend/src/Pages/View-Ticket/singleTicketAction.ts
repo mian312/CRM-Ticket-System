@@ -36,7 +36,7 @@ export const replyOnTicket = (_id: string, msgObj: object) => async (dispatch: D
             return dispatch(replyTicketFail(result.message));
         }
 
-        dispatch(fetchSingleTicket(_id));
+        dispatch(fetchSingleTicket(_id) as any);
 
         dispatch(replyTicketSuccess(result.message));
     } catch (error: any) {
@@ -53,7 +53,7 @@ export const closeTicket = (_id: string) => async (dispatch: Dispatch) => {
             return dispatch(closeTicketFail(result.message));
         }
 
-        dispatch(fetchSingleTicket(_id));
+        dispatch(fetchSingleTicket(_id) as any);
 
         dispatch(closeTicketSuccess("Status Updated successfully"));
     } catch (error: any) {

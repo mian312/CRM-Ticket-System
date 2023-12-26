@@ -64,7 +64,7 @@ export const Registration: React.FC = () => {
 
     const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        dispatch(newUserRegistration(newUser));
+        dispatch(newUserRegistration(newUser) as any);
         status === "error"
             ? toast.error("User is aready in use")
             : toast.success("New user is created");

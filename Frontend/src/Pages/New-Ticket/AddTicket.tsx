@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { toast } from "react-toastify";
-import { shortText } from "../../utils/validation";
 import { BreadCrumb } from "../../Components/BreadCrumbs/BreadCrumb";
 import AddTicketForm from "../../Components/Tickets/Add-Ticket/AddTicketForm";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import { getTrains, openNewTicket, searcStations } from "./addTicketAction";
-import Error from "../../Components/Shared/Error";
 import Loading from "../../Components/Shared/Loading";
 import { useNavigate } from "react-router-dom";
-import { fetchAllTickets } from "../Ticket-Listing/ticketsAction";
 import TrainTable from "../../Components/Trains/Train-Table/TrainTable";
 
 const initialFrmDt = {
@@ -37,7 +34,7 @@ export const AddTicket = () => {
         user: { name },
     } = useSelector((state: any) => state.user);
 
-    const { isLoading, trainsLoading, error, successMsg, stations, trains } = useSelector(
+    const { isLoading, trainsLoading, stations, trains } = useSelector(
         (state: any) => state.openTicket
     );
 
@@ -52,7 +49,7 @@ export const AddTicket = () => {
         });
 
         if (name === 'fromStation' || name === 'toStation') {
-            dispatch(searcStations(value, 5));
+            dispatch(searcStations(value, 5) as any);
         }
     };
 
@@ -61,7 +58,7 @@ export const AddTicket = () => {
 
         setFrmDataErro(initialFrmError);
         try {
-            dispatch(getTrains(frmData.fromStation, frmData.toStation, frmData.issueDate))
+            dispatch(getTrains(frmData.fromStation, frmData.toStation, frmData.issueDate) as any);
             setShowTeble(true);
 
         } catch (error: any) {
@@ -78,7 +75,7 @@ export const AddTicket = () => {
                 issueDate: frmData.issueDate,
                 trainNumber: trainNumber,
                 message: frmData.message
-            }))
+            }) as any);
 
             toast.success("Train is Booked")
             navigate('/dashboard')

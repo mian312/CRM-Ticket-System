@@ -2,8 +2,6 @@ import {
     openNewTicketPending,
     openNewTicketSuccess,
     openNewTicketFail,
-    searchNewTicketPending,
-    searchNewTicketFail,
     getStationPending,
     getStationFail,
     getStationSuccess,

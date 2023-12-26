@@ -1,19 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col } from "react-bootstrap";
 import SearchForm from "../../Components/Search/SearchForm";
 import TicketTable from "../../Components/Tickets/TicketTable/TicketTable";
 import { BreadCrumb } from "../../Components/BreadCrumbs/BreadCrumb";
-// import tickets from "../../assets/data/dummy-tickets.json";
-// import { Ticket } from '../../assets/interface/interface';
 import { Helmet } from "react-helmet-async";
-import { NavigateFunction, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAllTickets, filterSearchTicket } from "./ticketsAction";
 import Loading from "../../Components/Shared/Loading";
 import Error from "../../Components/Shared/Error";
 
 const TicketLists: React.FC = () => {
-    const navigate: NavigateFunction = useNavigate();
     const [str, setStr] = useState<string>("");
     const dispatch = useDispatch();
 
@@ -25,13 +21,11 @@ const TicketLists: React.FC = () => {
     const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         const { value } = e.target;
         setStr(value)
-        //! Argument type '(disptch: Dispatch) => void' is not assignable to parameter type 'AnyAction'
-        dispatch(filterSearchTicket(value));
+        dispatch(filterSearchTicket(value) as any);
     };
 
     useEffect(() => {
-        //! Argument type '(disptch: Dispatch) => Promise<void>' is not assignable to parameter type 'AnyAction'
-        dispatch(fetchAllTickets());
+        dispatch(fetchAllTickets() as any);
     }, [dispatch]);
 
     if (isLoading) return <Loading />;

@@ -24,7 +24,7 @@ const ViewTicket: React.FC = () => {
 
 
     useEffect(() => {
-        dispatch(fetchSingleTicket(tId));
+        dispatch(fetchSingleTicket(tId as string) as any);
         console.log('ticket', selectedTicket)
     }, [tId, dispatch]);
 
@@ -43,7 +43,7 @@ const ViewTicket: React.FC = () => {
         };
 
         try {
-            dispatch(replyOnTicket(tId, msgObj));
+            dispatch(replyOnTicket(tId as string, msgObj as object) as any);
             setMessage("");
 
             toast.success(replyMsg);
@@ -90,7 +90,7 @@ const ViewTicket: React.FC = () => {
                         ? <Alert variant="danger" className="text-center">This ticket is closed</Alert>
                         : <Button
                             variant="outline-info"
-                            onClick={() => dispatch(closeTicket(tId))}
+                            onClick={() => dispatch(closeTicket(tId as string) as any)}
                         >
                             Close Ticket
                         </Button>

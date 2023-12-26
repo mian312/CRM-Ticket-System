@@ -58,9 +58,9 @@ const Entry: React.FC = () => {
             }
 
             dispatch(loginSuccess());
-            dispatch(getUserProfile());
+            dispatch(getUserProfile() as any);
             toast.success("Login Successful!");
-            dispatch(fetchAllTickets());
+            dispatch(fetchAllTickets() as any);
             navigate("/dashboard");
         } catch (error: any) {
             dispatch(loginFail(error.message));
@@ -70,7 +70,7 @@ const Entry: React.FC = () => {
     const handleOnResetSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        dispatch(sendPasswordResetOtp(input));
+        dispatch(sendPasswordResetOtp(input) as any);
         navigate('/password-reset')
         console.log("Input : ", input);
     };
