@@ -1,6 +1,6 @@
 import Axios from "./Axios";
 
-const accessJWT = sessionStorage.getItem("accessJWT");
+// const sessionStorage.getItem("accessJWT") = sessionStorage.getItem("sessionStorage.getItem("accessJWT")");
 
 //* Calling API to get all tickets
 export const getAllTickets = () => {
@@ -10,7 +10,7 @@ export const getAllTickets = () => {
             // Saving API response to get all tickets
             const result = await Axios.get("/api/ticket", {
                 headers: {
-                    Authorization: accessJWT,
+                    Authorization: sessionStorage.getItem("accessJWT"),
                 },
             });
 
@@ -31,7 +31,7 @@ export const getSingleTicket = (_id: string) => {
             // Saving API response to get ticket by _id
             const result = await Axios.get(`/api/ticket/${_id}`, {
                 headers: {
-                    Authorization: accessJWT,
+                    Authorization: sessionStorage.getItem("accessJWT"),
                 },
             });
 
@@ -52,7 +52,7 @@ export const updateReplyTicket = (_id: string, msgObj: object) => {
             // Saving API response to reply ticket
             const result = await Axios.put(`/api/ticket/${_id}`, msgObj, {
                 headers: {
-                    Authorization: accessJWT,
+                    Authorization: sessionStorage.getItem("accessJWT"),
                 },
             });
 
@@ -73,7 +73,7 @@ export const createNewTicket = (frmData: object) => {
             // Saving API response to create a new ticket
             const result = await Axios.post('/api/ticket', frmData, {
                 headers: {
-                    Authorization: accessJWT,
+                    Authorization: sessionStorage.getItem("accessJWT"),
                 },
             });
 
@@ -99,7 +99,7 @@ export const updateTicketStatusClosed = (_id: string) => {
                 },
                 {
                     headers: {
-                        Authorization: accessJWT,
+                        Authorization: sessionStorage.getItem("accessJWT"),
                     },
                 }
             );
