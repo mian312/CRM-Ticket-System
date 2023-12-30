@@ -11,6 +11,7 @@ import PrivateRoute from './Layouts/PrivateRoute';
 import { Registration } from './Pages/Regestration/Registration.pg';
 import UpdatePass from './Pages/Update-Password/UpdatePass';
 import { ToastContainer } from 'react-toastify';
+import NotFound from './Pages/Not-Found/NotFound';
 
 export default function App() {
   return (
@@ -56,6 +57,7 @@ export default function App() {
             </PrivateRoute>
           </DefaultLayout>
         } />
+        <Route path='/*' element={<NotFound />} />
       </Routes>
     </>
   );
