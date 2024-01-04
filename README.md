@@ -54,6 +54,21 @@ $ npm run setup
 $ npm run serve
 ```
 
+## Acknowledgements
+
+ Acknowledgment to
+ - [Build MERN Stack based CRM Ticket System ](https://www.youtube.com/playlist?list=PLtPNAX49WUFN8yq2vEuAY6AhM5EJOXQQ0)
+  for serving as a valuable resource during project development.
+
+ ## Key Enhancements
+
+- **Frontend Enhancements:**
+    Utilized TypeScript in the frontend with React for improved type safety and code maintainability.
+- **Security Enhancements:**
+    Integrated Twilio to provide secure password reset options through SMS verification.
+- **User Experience Enhancements:**
+    Enhanced travel awareness by displaying real-time train station and train information via a third-party API.
+
 
 # Tech Stack
 
